@@ -1,0 +1,17 @@
+package org.example.oms;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+@SpringBootApplication
+@EnableJpaRepositories("org.example.oms.service.infra.repository")
+@EnableTransactionManagement
+public class OmsApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(OmsApplication.class, args);
+	}
+
+}

@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: oms
+  datasource:
+    url: jdbc:postgresql://localhost:5432/oms
+    username: postgres
+    password: changeme
+    hikari:
+      minimum-idle: 8
+      maximum-pool-size: 32
+    
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: create-drop
+    show-sql: false
+  data:
+    rest:
+      base-path: /api
+      
+kafka:
+  bootstrap-servers: localhost:9092 # Replace with your Kafka brokers
+  schema-registry-url: http://localhost:8081 # Replace with your Schema Registry URL
+  topic:
+    order-events: order-events # Replace with your topic name
+  consumer:
+    group-id: oms-group
+    
+springdoc:
+    show-actuator: true
+
+logging:
+  level:
+    org.hibernate.SQL: INFO
+    org.springframework.transaction: INFO
