@@ -2,8 +2,12 @@ package org.example.oms.model;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.example.common.model.Fill;
+import org.example.common.model.Order;
+import org.example.common.model.Quote;
+import org.example.common.model.State;
+import org.example.common.model.tx.Transaction;
 import org.springframework.lang.NonNull;
-import org.example.oms.model.tx.Transaction;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

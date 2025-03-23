@@ -1,4 +1,4 @@
-package org.example.oms.model;
+package org.example.common.model;
 
 public enum State {
     NEW,

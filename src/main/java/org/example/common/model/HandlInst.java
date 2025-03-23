@@ -1,4 +1,4 @@
-package org.example.oms.model;
+package org.example.common.model;
 
 import lombok.Getter;
 

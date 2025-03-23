@@ -4,14 +4,14 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.example.common.model.Order;
+import org.example.common.model.State;
+import org.example.common.model.tx.AcceptOrderTx;
+import org.example.common.model.tx.NewOrderTx;
+import org.example.common.model.tx.Transaction;
+import org.example.common.model.tx.Tx;
 import org.example.oms.model.Event;
-import org.example.oms.model.Order;
 import org.example.oms.model.ProcessingContext;
-import org.example.oms.model.State;
-import org.example.oms.model.tx.AcceptOrderTx;
-import org.example.oms.model.tx.NewOrderTx;
-import org.example.oms.model.tx.Transaction;
-import org.example.oms.model.tx.Tx;
 import org.example.oms.service.business.mapper.NewOrderTxToOrderMapper;
 import org.example.oms.service.infra.repository.OrderRepository;
 

@@ -6,6 +6,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+
+import io.micrometer.observation.annotation.Observed;
+
 import org.example.oms.model.ProcessingEvent;
 import org.example.oms.service.infra.repository.OrderOutboxRepository;
 
@@ -27,11 +30,12 @@ public class MessagePublisher {
      */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Observed(name = "oms.message-publisher.handle-order-event")
     public void handleOrderEvent(ProcessingEvent event) {
         log.info("Processing order event after transaction commit: {}", event);
 
         try {
-            Long orderId = event.getOrderOutbox().getOrderMessage().getOrder().getId();
+            Long orderId = event.getOrderOutbox().getOrder().getId();
             log.info("Successfully processed event for order: {}", orderId);
         } catch (Exception e) {
             log.error("Error processing order event: {}", e.getMessage(), e);

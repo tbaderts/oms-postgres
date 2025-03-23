@@ -1,4 +1,4 @@
-package org.example.oms.model.tx;
+package org.example.common.model.tx;
 
 import lombok.Getter;
 

@@ -1,10 +1,11 @@
 package org.example.oms.service.processing;
 
-import org.springframework.stereotype.Service;
+import org.example.common.model.tx.TxInfo;
+import org.example.common.model.tx.TxState;
 import org.example.oms.model.ProcessingContext;
-import org.example.oms.model.tx.TxInfo;
-import org.example.oms.model.tx.TxState;
+import org.springframework.stereotype.Service;
 
+import io.micrometer.observation.annotation.Observed;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +30,7 @@ public class OrchestrationService {
     }
 
     @Transactional
+    @Observed(name = "oms.orchestration-service.process")
     public TxInfo process(ProcessingContext context) {
         transactionService.executeTransaction(context);
         eventProcessor.processEvent(context);

@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.example.common.model.tx.Transaction;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import org.example.oms.model.tx.Transaction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

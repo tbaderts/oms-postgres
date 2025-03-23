@@ -1,9 +1,9 @@
 package org.example.oms.api;
 
+import org.example.common.model.tx.Transaction;
+import org.example.common.model.tx.TxInfo;
+import org.example.common.model.tx.TxState;
 import org.example.oms.model.ProcessingContext;
-import org.example.oms.model.tx.Transaction;
-import org.example.oms.model.tx.TxInfo;
-import org.example.oms.model.tx.TxState;
 import org.example.oms.service.processing.OrchestrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

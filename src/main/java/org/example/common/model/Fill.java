@@ -1,4 +1,4 @@
-package org.example.oms.model;
+package org.example.common.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

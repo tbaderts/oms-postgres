@@ -1,20 +1,21 @@
-package org.example.oms.model;
+package org.example.common.model.tx;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
 
 @SuperBuilder
-@EqualsAndHashCode
 @NoArgsConstructor
 @Getter
-public class OrderMessage {
-
-    private Order order;
+@Jacksonized
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AcceptOrderTx  extends Transaction {
 
     @Override
     public String toString() {

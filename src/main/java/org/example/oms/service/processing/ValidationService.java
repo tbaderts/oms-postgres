@@ -4,9 +4,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.example.oms.model.Order;
+
+import io.micrometer.observation.annotation.Observed;
+
+import org.example.common.model.Order;
+import org.example.common.model.State;
 import org.example.oms.model.ProcessingContext;
-import org.example.oms.model.State;
 import org.example.oms.service.business.StateMachine;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ValidationService {
 
     @Transactional
+    @Observed(name = "oms.event-validation.service-validate")
     public void validate(ProcessingContext context) {
         if(isValidStateTransition(context.getOrder(), context.getNewState())) {
             context.getOrder().setState(context.getNewState());

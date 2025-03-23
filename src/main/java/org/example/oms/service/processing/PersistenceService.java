@@ -2,7 +2,10 @@ package org.example.oms.service.processing;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.example.oms.model.Order;
+
+import io.micrometer.observation.annotation.Observed;
+
+import org.example.common.model.Order;
 import org.example.oms.model.ProcessingContext;
 import org.example.oms.service.infra.repository.OrderRepository;
 
@@ -19,6 +22,7 @@ public class PersistenceService {
     }
 
     @Transactional
+    @Observed(name = "oms.persistence-service.persist")
     public void persist(ProcessingContext context) {
         Order savedOrder = orderRepository.save(context.getOrder());
         log.info("Order persisted: {}", savedOrder);

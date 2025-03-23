@@ -1,11 +1,10 @@
 package org.example.oms.service.business.mapper;
 
-import org.example.oms.model.Order;
-import org.example.oms.model.State;
-import org.example.oms.model.tx.NewOrderTx;
-
 import io.github.jaspeen.ulid.ULID;
 
+import org.example.common.model.Order;
+import org.example.common.model.State;
+import org.example.common.model.tx.NewOrderTx;
 import org.springframework.stereotype.Component;
 
 @Component

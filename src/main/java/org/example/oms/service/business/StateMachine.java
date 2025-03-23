@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.example.oms.model.State;
+import org.example.common.model.State;
 
 public class StateMachine {
     // Define valid transitions as immutable maps

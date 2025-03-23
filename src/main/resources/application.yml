@@ -2,13 +2,15 @@ spring:
   application:
     name: oms
   datasource:
-    url: jdbc:postgresql://localhost:5432/oms
+    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:localhost}:5432/oms
     username: postgres
     password: changeme
     hikari:
       minimum-idle: 8
       maximum-pool-size: 32
-    
+  threads:
+    virtual:
+      enabled: false
   jpa:
     generate-ddl: true
     properties:
@@ -16,22 +18,88 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         ddl-auto: create-drop
     show-sql: false
-  data:
-    rest:
-      base-path: /api
-      
-kafka:
-  bootstrap-servers: localhost:9092 # Replace with your Kafka brokers
-  schema-registry-url: http://localhost:8081 # Replace with your Schema Registry URL
-  topic:
-    order-events: order-events # Replace with your topic name
-  consumer:
-    group-id: oms-group
+  cloud:
+    function:
+        definition: consumer
+    stream:
+      bindings:
+        consumer-in-0:
+          destination: transaction_requests
+          group: oms_consumer_group
+          consumer:
+            concurrency: 1
+            use-native-decoding: false
+        order-out-0:
+          destination: order_events
+          producer:
+            use-native-encoding: false
+      kafka:
+        binder:
+          brokers: ${BROKER_HOST:localhost}:9092
+          configuration:
+            transaction:
+              transaction-id-prefix: tx-
+              enable: true
+              acks: all
+              retries: 3
+            isolation:
+              level: read_committed
+            consumer:
+              key-serializer: org.apache.kafka.common.serialization.StringSerializer
+              value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+              enableDlq: true
+              dlqName: oms_dlq
+            producer:
+              key-serializer: org.apache.kafka.common.serialization.StringSerializer
+              value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+              properties:
+                enable:
+                  idempotence: true
+                acks: all
+                retries: 3
+                max:
+                  in:
+                    flight:
+                      requests:
+                        per:
+                          connection: 1
+            enable:
+              idempotence: true
+            acks: all
+            retries: 3
+            max:
+              in:
+                flight:
+                  requests:
+                    per:
+                      connection: 1
+      default:
+        content-type: application/json
+        consumer:
+          concurrency: 1
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
     
 springdoc:
     show-actuator: true
+
+tracing:
+  url: http://${JAEGER_HOST:localhost}:4317
 
 logging:
   level:
     org.hibernate.SQL: INFO
     org.springframework.transaction: INFO
+
+server:
+  port: 8090

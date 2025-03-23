@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import io.micrometer.observation.annotation.Observed;
+
 import org.example.oms.model.OrderEvent;
 import org.example.oms.model.ProcessingContext;
 import org.example.oms.service.infra.repository.OrderEventRepository;
@@ -21,6 +24,7 @@ public class EventProcessor {
     }
 
     @Transactional
+    @Observed(name = "oms.event-processor.process-event")
     public void processEvent(ProcessingContext context) {
         OrderEvent orderEvent = OrderEvent.builder()
                 .orderId(context.getOrder().getOrderId())

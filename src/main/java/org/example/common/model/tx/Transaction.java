@@ -1,5 +1,6 @@
-package org.example.oms.model.tx;
+package org.example.common.model.tx;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -18,6 +19,7 @@ import lombok.experimental.SuperBuilder;
         @JsonSubTypes.Type(value = AcceptOrderTx.class, name = "acceptOrderTx"),
         @JsonSubTypes.Type(value = RejectOrderTx.class, name = "rejectOrderTx")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Transaction {
 
     private String orderId;

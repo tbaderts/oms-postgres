@@ -1,4 +1,4 @@
-package org.example.oms.model.tx;
+package org.example.common.model.tx;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

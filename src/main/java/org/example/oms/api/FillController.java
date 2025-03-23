@@ -3,7 +3,7 @@ package org.example.oms.api;
 import java.util.List;
 import java.util.Optional;
 
-import org.example.oms.model.Fill;
+import org.example.common.model.Fill;
 import org.example.oms.service.infra.repository.FillRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;

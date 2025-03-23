@@ -2,7 +2,7 @@ package org.example.oms.api;
 
 import java.util.List;
 
-import org.example.oms.model.Quote;
+import org.example.common.model.Quote;
 import org.example.oms.service.infra.repository.QuoteRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
