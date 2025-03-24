@@ -26,17 +26,25 @@ spring:
         consumer-in-0:
           destination: transaction_requests
           group: oms_consumer_group
+          #content-type: application/*+protobuf
           consumer:
             concurrency: 1
             use-native-decoding: false
         order-out-0:
           destination: order_events
+          #content-type: application/*+protobuf
           producer:
             use-native-encoding: false
       kafka:
         binder:
           brokers: ${BROKER_HOST:localhost}:9092
           configuration:
+            schema:
+              registry:
+                url: http://localhost:8081
+            #value: 
+              #serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+              #deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
             transaction:
               transaction-id-prefix: tx-
               enable: true
@@ -45,13 +53,13 @@ spring:
             isolation:
               level: read_committed
             consumer:
-              key-serializer: org.apache.kafka.common.serialization.StringSerializer
-              value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+              #key-serializer: org.apache.kafka.common.serialization.StringSerializer
+              #value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
               enableDlq: true
               dlqName: oms_dlq
             producer:
-              key-serializer: org.apache.kafka.common.serialization.StringSerializer
-              value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+              #key-serializer: org.apache.kafka.common.serialization.StringSerializer
+              #value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
               properties:
                 enable:
                   idempotence: true

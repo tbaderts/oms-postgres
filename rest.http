@@ -4,7 +4,7 @@ content-type: application/json
 {
   "type": "newOrderTx",
   "sessionId": "test-session",
-  "clOrdId": "20250323-test-020",
+  "clOrdId": "20250324-test-001",
   "sendingTime": "2024-03-23T10:00:00",
   "account": "account-01",
   "execInst": "NO_CROSS",

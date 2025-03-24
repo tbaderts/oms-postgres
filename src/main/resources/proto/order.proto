@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option java_outer_classname = "OrderMessage";
+package org.example.oms.model.msg;
+import "google/protobuf/any.proto";
+
+message OrderMessage {
+    string account = 1;
+    google.protobuf.Any cancel_state = 2;
+    google.protobuf.Any cash_order_qty = 3;
+    string cl_ord_id = 4;
+    string ex_destination = 5;
+    string exec_inst = 6;
+    google.protobuf.Any expire_time = 7;
+    string handl_inst = 8;
+    uint32 id = 9;
+    google.protobuf.Any maturity_month_year = 10;
+    string ord_type = 11;
+    string order_id = 12;
+    uint32 order_qty = 13;
+    google.protobuf.Any orig_cl_ord_id = 14;
+    google.protobuf.Any parent_order_id = 15;
+    google.protobuf.Any position_effect = 16;
+    double price = 17;
+    string price_type = 18;
+    google.protobuf.Any put_or_call = 19;
+    google.protobuf.Any root_order_id = 20;
+    google.protobuf.Any security_desc = 21;
+    string security_exchange = 22;
+    string security_i_d_source = 23;
+    string security_id = 24;
+    google.protobuf.Any security_type = 25;
+    string sending_time = 26;
+    string session_id = 27;
+    string settl_currency = 28;
+    string side = 29;
+    string state = 30;
+    google.protobuf.Any stop_px = 31;
+    google.protobuf.Any strike_price = 32;
+    string symbol = 33;
+    string text = 34;
+    google.protobuf.Any tif_timestamp = 35;
+    string time_in_force = 36;
+    string transact_time = 37;
+    string tx = 38;
+    uint32 tx_nr = 39;
+    google.protobuf.Any underlying_security_type = 40;
+}

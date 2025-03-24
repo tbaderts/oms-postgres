@@ -22,3 +22,6 @@ docker compose up jaeger prometheus grafana -d
 
 kafka:
 http://localhost:9021
+
+protobuf:
+./gradlew generateProto
