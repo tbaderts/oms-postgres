@@ -24,15 +24,15 @@ spring:
     stream:
       bindings:
         consumer-in-0:
-          destination: transaction_requests
+          destination: oms_transactions
           group: oms_consumer_group
-          #content-type: application/*+protobuf
+          content-type: application/*+avro
           consumer:
             concurrency: 1
             use-native-decoding: false
         order-out-0:
-          destination: order_events
-          #content-type: application/*+protobuf
+          destination: oms_orders
+          content-type: application/*+avro
           producer:
             use-native-encoding: false
       kafka:
@@ -42,9 +42,6 @@ spring:
             schema:
               registry:
                 url: http://localhost:8081
-            #value: 
-              #serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
-              #deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
             transaction:
               transaction-id-prefix: tx-
               enable: true
@@ -53,13 +50,10 @@ spring:
             isolation:
               level: read_committed
             consumer:
-              #key-serializer: org.apache.kafka.common.serialization.StringSerializer
-              #value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+              key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+              value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
               enableDlq: true
               dlqName: oms_dlq
-            producer:
-              #key-serializer: org.apache.kafka.common.serialization.StringSerializer
-              #value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
               properties:
                 enable:
                   idempotence: true
@@ -71,6 +65,9 @@ spring:
                       requests:
                         per:
                           connection: 1
+            producer:
+              key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+              value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
             enable:
               idempotence: true
             acks: all

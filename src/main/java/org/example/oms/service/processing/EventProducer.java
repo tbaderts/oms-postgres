@@ -9,7 +9,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MimeTypeUtils;
 
 import io.micrometer.observation.annotation.Observed;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,7 @@ public class EventProducer {
     @Observed(name = "oms.event-producer.produce-event")
     public void produceEvent(ProcessingContext context) {
         Message<Order> msg = MessageBuilder.withPayload(context.getOrder()).build();
-        boolean sent = streamBridge.send("order-out-0", msg, MimeTypeUtils.APPLICATION_JSON);
+        boolean sent = streamBridge.send("order-out-0", msg);
         if (sent) {
             log.info("Message successfully sent: {}", msg);
         } else {
