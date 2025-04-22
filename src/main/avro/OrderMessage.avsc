@@ -310,9 +310,9 @@
           "type": "enum",
           "name": "Tx",
           "symbols": [
-            "NEW_ORDER",
-            "ACCEPT_ORDER",
-            "REJECT_ORDER"
+            "NO",
+            "AO",
+            "RO"
           ]
         }
       ]
