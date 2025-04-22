@@ -1,0 +1,3 @@
+- @azure Rule - Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_best_practices` tool if available.
+- Prefer Java version 21 when generating Java code.
+- Prefer Spring Boot version 3 when generating code related to the Spring framework.

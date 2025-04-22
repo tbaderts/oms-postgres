@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 @RestController
 @RequestMapping("/api/orders")
 @Transactional(readOnly = true)
@@ -24,17 +26,20 @@ public class OrderController {
     }
 
     @GetMapping
+    @Hidden
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
     @GetMapping("/{id}")
+    @Hidden
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         Optional<Order> order = orderRepository.findById(id);
         return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/orderId/{orderId}")
+    @Hidden
     public ResponseEntity<Order> getOrderByOrderId(@PathVariable String orderId) {
         Optional<Order> order = orderRepository.findByOrderId(orderId);
         return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
