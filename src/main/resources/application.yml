@@ -96,7 +96,7 @@ management:
       probability: 1.0
     
 springdoc:
-    show-actuator: true
+    show-actuator: false
 
 tracing:
   url: http://${JAEGER_HOST:localhost}:4317

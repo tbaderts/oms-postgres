@@ -4,6 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'org.springdoc.openapi-gradle-plugin' version '1.9.0'
 	id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1' 
+	id 'org.openapi.generator' version '7.8.0'
 }
 
 group = 'org.example.oms'
@@ -45,6 +46,8 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
 	implementation 'io.github.jaspeen:ulid-java:0.2.0'
+	// implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    // implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -58,6 +61,26 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$projectDir/src/main/openapi/oms_api-docs.yml".toString()
+    outputDir = "$buildDir/generated".toString()
+    apiPackage = "org.example.common.api"
+    modelPackage = "org.example.common.model.tx"
+    configOptions = [
+        interfaceOnly: "true",
+        useSpringBoot3: "true",
+        skipDefaultInterface: "true"
+    ]
+}
+
+// tasks.named("compileJava") {
+//     dependsOn tasks.named("openApiGenerate")
+// }
+
+// Add the generated sources to the source set
+sourceSets.main.java.srcDirs += "$buildDir/generated/src/main/java"
 
 tasks.named('test') {
 	useJUnitPlatform()

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.Hidden;
+
 import org.example.oms.model.OrderEvent;
 import org.example.oms.service.infra.repository.OrderEventRepository;
 
@@ -22,6 +25,7 @@ public class OrderEventController {
     }
 
     @GetMapping("/orderId/{orderId}")
+    @Hidden
     public List<OrderEvent> getOrderEventsByOrderId(@PathVariable String orderId) {
         return orderEventRepository.findByOrderId(orderId);
     }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 @RestController
 @RequestMapping("/api/fills")
 @Transactional(readOnly = true)
@@ -24,11 +26,13 @@ public class FillController {
     }
 
     @GetMapping
+    @Hidden
     public List<Fill> getAllFills() {
         return fillRepository.findAll();
     }
 
     @GetMapping("/{id}")
+    @Hidden
     public ResponseEntity<Fill> getFillById(@PathVariable Long id) {
         Optional<Fill> fill = fillRepository.findById(id);
         return fill.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());

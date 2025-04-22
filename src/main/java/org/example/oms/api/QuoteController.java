@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 @RestController
 @RequestMapping("/api/quotes")
 @Transactional(readOnly = true)
@@ -23,11 +25,13 @@ public class QuoteController {
     }
 
     @GetMapping
+    @Hidden
     public List<Quote> getAllQuotes() {
         return quoteRepository.findAll();
     }
 
     @GetMapping("/{id}")
+    @Hidden
     public ResponseEntity<Quote> getQuoteById(@PathVariable Long id) {
         return quoteRepository.findById(id)
                 .map(ResponseEntity::ok)

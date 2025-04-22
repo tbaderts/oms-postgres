@@ -1,0 +1,190 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8090
+  description: Generated server url
+paths:
+  /api/tx:
+    post:
+      tags:
+      - transaction-controller
+      operationId: execute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: "#/components/schemas/AcceptOrderTx"
+              - $ref: "#/components/schemas/NewOrderTx"
+              - $ref: "#/components/schemas/RejectOrderTx"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TxInfo"
+components:
+  schemas:
+    AcceptOrderTx:
+      allOf:
+      - $ref: "#/components/schemas/Transaction"
+    NewOrderTx:
+      allOf:
+      - $ref: "#/components/schemas/Transaction"
+      - type: object
+        properties:
+          sessionId:
+            type: string
+          parentOrderId:
+            type: string
+          clOrdId:
+            type: string
+          sendingTime:
+            type: string
+            format: date-time
+          account:
+            type: string
+          execInst:
+            type: string
+            enum:
+            - NO_CROSS
+            - OK_TO_CROSS
+            - MID_PEG
+          handlInst:
+            type: string
+            enum:
+            - AUTO
+            - BROKER_INTERVENTION_OK
+            - MANUAL
+          securityIDSource:
+            type: string
+            enum:
+            - ISIN
+            - RIC
+            - EXCHANGE_SYMBOL
+            - BLOOMBERG_SYMBOL
+          orderQty:
+            type: number
+          cashOrderQty:
+            type: number
+          positionEffect:
+            type: string
+            enum:
+            - OPEN
+            - CLOSE
+          securityDesc:
+            type: string
+          securityType:
+            type: string
+            enum:
+            - CS
+            - FUT
+            - OPT
+            - ETF
+            - ETN
+            - MF
+            - CORP
+          maturityMonthYear:
+            type: string
+          strikePrice:
+            type: number
+          priceType:
+            type: string
+            enum:
+            - PERCENTAGE
+            - PER_UNIT
+            - FIXED_AMOUNT
+            - DISCOUNT
+            - PREMIUM
+            - SPREAD
+            - YIELD
+          putOrCall:
+            type: integer
+            format: int32
+          underlyingSecurityType:
+            type: string
+          ordType:
+            type: string
+            enum:
+            - MARKET
+            - LIMIT
+            - STOP
+            - STOP_LIMIT
+            - MARKET_ON_CLOSE
+          price:
+            type: number
+          stopPx:
+            type: number
+          securityId:
+            type: string
+          side:
+            type: string
+            enum:
+            - BUY
+            - SELL
+            - SELL_SHORT
+            - SUBSCRIBE
+            - REDEEM
+          symbol:
+            type: string
+          timeInForce:
+            type: string
+            enum:
+            - DAY
+            - GOOD_TILL_CANCEL
+            - AT_THE_OPENING
+            - IMMEDIATE_OR_CANCEL
+            - FILL_OR_KILL
+            - GOOD_TILL_CROSSING
+            - GOOD_TILL_DATE
+            - AT_THE_CLOSE
+          transactTime:
+            type: string
+            format: date-time
+          exDestination:
+            type: string
+          settlCurrency:
+            type: string
+          expireTime:
+            type: string
+            format: date-time
+          securityExchange:
+            type: string
+          text:
+            type: string
+    RejectOrderTx:
+      allOf:
+      - $ref: "#/components/schemas/Transaction"
+    Transaction:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        orderId:
+          type: string
+        type:
+          type: string
+      required:
+      - type
+    TxInfo:
+      type: object
+      discriminator:
+        propertyName: '@type'
+      properties:
+        orderId:
+          type: string
+        message:
+          type: string
+        txState:
+          type: string
+          enum:
+          - OK
+          - FAIL
+        '@type':
+          type: string
+      required:
+      - '@type'

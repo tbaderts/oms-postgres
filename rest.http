@@ -1,11 +1,12 @@
+
 POST http://localhost:8090/api/tx HTTP/1.1
 content-type: application/json
 
 {
   "type": "newOrderTx",
   "sessionId": "test-session",
-  "clOrdId": "20250324-test-001",
-  "sendingTime": "2024-03-23T10:00:00",
+  "clOrdId": "20250422-test-001",
+  "sendingTime": "2024-04-22T10:00:00",
   "account": "account-01",
   "execInst": "NO_CROSS",
   "handlInst": "BROKER_INTERVENTION_OK",
