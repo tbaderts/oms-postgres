@@ -13,15 +13,30 @@ admin/secret
 
 prometheus:
 http://localhost:9090
-
 http://localhost:8090/actuator/metrics
 
-#docker network create monitoring
-docker network create app-net
-docker compose up jaeger prometheus grafana -d
+local:
+export DB_URL=jdbc:postgresql://localhost:5432/oms
+export DB_USER=postgres
+export DB_PASSWORD=changeme
+export KAFKA_BROKERS=localhost:9092
+export ORDER_TOPIC=oms_orders
+export CONSUMER_GROUP=oms_consumer_group
+export REGISTRY_URL=http://localhost:8081
+export TX_ID_PREFIX=tx-
+export DEAD_LETTER_TOPIC=oms_dlq
+export TRACING_URL=http://localhost:4317
+export SERVER_PORT=8090
 
-kafka:
-http://localhost:9021
-
-protobuf:
-./gradlew generateProto
+docker:
+export DB_URL=jdbc:postgresql://postgres:5432/oms
+export DB_USER=postgres
+export DB_PASSWORD=changeme
+export KAFKA_BROKERS=broker:29092
+export ORDER_TOPIC=oms_orders
+export CONSUMER_GROUP=oms_consumer_group
+export REGISTRY_URL=http://schema-registry:8081
+export TX_ID_PREFIX=tx-
+export DEAD_LETTER_TOPIC=oms_dlq
+export TRACING_URL=http://jaeger:4317
+export SERVER_PORT=8090

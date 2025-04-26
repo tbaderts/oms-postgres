@@ -32,12 +32,13 @@ public class EventProducer {
     @Observed(name = "oms.event-producer.produce-event")
     public void produceEvent(ProcessingContext context) {
         Message<Order> msg = MessageBuilder.withPayload(context.getOrder()).build();
-        boolean sent = streamBridge.send("order-out-0", msg);
-        if (sent) {
-            log.info("Message successfully sent: {}", msg);
-        } else {
-            log.error("Failed to send message for order: {}", context.getOrder());
-        }
+        // boolean sent = streamBridge.send("order-out-0", msg);
+        // if (sent) {
+        //     log.info("Message successfully sent: {}", msg);
+        // } else {
+        //     log.error("Failed to send message for order: {}", context.getOrder());
+        // }
+
         // throw new RuntimeException("Failed to send message for orderId: " +
         // context.getOrder().getOrderId());
 

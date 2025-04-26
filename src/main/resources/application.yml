@@ -2,9 +2,9 @@ spring:
   application:
     name: oms
   datasource:
-    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:localhost}:5432/oms
-    username: postgres
-    password: changeme
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     hikari:
       minimum-idle: 8
       maximum-pool-size: 32
@@ -25,25 +25,25 @@ spring:
       bindings:
         consumer-in-0:
           destination: oms_transactions
-          group: oms_consumer_group
+          group: ${CONSUMER_GROUP}
           content-type: application/*+avro
           consumer:
             concurrency: 1
             use-native-decoding: false
         order-out-0:
-          destination: oms_orders
+          destination: ${ORDER_TOPIC}
           content-type: application/*+avro
           producer:
             use-native-encoding: false
       kafka:
         binder:
-          brokers: ${BROKER_HOST:localhost}:9092
+          brokers: ${KAFKA_BROKERS}
           configuration:
             schema:
               registry:
-                url: http://localhost:8081
+                url: ${REGISTRY_URL}
             transaction:
-              transaction-id-prefix: tx-
+              transaction-id-prefix: ${TX_ID_PREFIX}
               enable: true
               acks: all
               retries: 3
@@ -53,7 +53,7 @@ spring:
               key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
               value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
               enableDlq: true
-              dlqName: oms_dlq
+              dlqName: ${DEAD_LETTER_TOPIC}
               properties:
                 enable:
                   idempotence: true
@@ -99,7 +99,7 @@ springdoc:
     show-actuator: false
 
 tracing:
-  url: http://${JAEGER_HOST:localhost}:4317
+  url: ${TRACING_URL}
 
 logging:
   level:
@@ -107,4 +107,4 @@ logging:
     org.springframework.transaction: INFO
 
 server:
-  port: 8090
+  port: ${SERVER_PORT}

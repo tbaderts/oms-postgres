@@ -1,2 +1,0 @@
-zipkin:
-https://medium.com/thefreshwrites/distributed-tracing-in-microservices-baf9c693ba50

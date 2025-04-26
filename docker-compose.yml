@@ -8,14 +8,18 @@ services:
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_HOST=postgres
-      - JAEGER_HOST=jaeger
-      - BROKER_HOST=broker
-      #- SPRING_DATASOURCE_USERNAME=$USERNAME
-      #- SPRING_DATASOURCE_PASSWORD=$PASSWORD
-
+      DB_URL: $DB_URL
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
+      KAFKA_BROKERS: $KAFKA_BROKERS
+      ORDER_TOPIC: $ORDER_TOPIC
+      CONSUMER_GROUP: $CONSUMER_GROUP
+      REGISTRY_URL: $REGISTRY_URL
+      TX_ID_PREFIX: $TX_ID_PREFIX
+      DEAD_LETTER_TOPIC: $DEAD_LETTER_TOPIC
+      TRACING_URL: $TRACING_URL
+      SERVER_PORT: $SERVER_PORT
     ports:
-      #- "$LOCAL_PORT:$DOCKER_PORT"
       - "8090:8090"
     networks:
       - app-net
@@ -43,8 +47,6 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-      # Replace CLUSTER_ID with a unique base64 UUID using "bin/kafka-storage.sh random-uuid"
-      # See https://docs.confluent.io/kafka/operations-tools/kafka-tools.html#kafka-storage-sh
       CLUSTER_ID: '01JNXZJ4MGR5ZXBZ50A2NJSCYX'
     networks:
       - app-net
@@ -110,7 +112,6 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
        - pgadmin:/var/lib/pgadmin
-
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     networks:
@@ -120,8 +121,8 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
-      - "16686:16686" # the jaeger UI port
-      - "4317:4317" # the open telemetry grpc port for sending traces
+      - "16686:16686"
+      - "4317:4317"
     environment:
       - COLLECTOR_OTLP_ENABLED=true
       - LOG_LEVEL=debug
@@ -162,7 +163,6 @@ services:
 networks:
   app-net:
     driver: bridge
-    #external: true
 
 volumes:
     postgres:
