@@ -1,0 +1,31 @@
+{
+  "namespace": "org.example.common.model.msg",
+  "type": "record",
+  "doc": "",
+  "name": "CommandMessage",
+  "fields": [
+    {
+      "name": "commandType",
+      "type": {
+        "type": "enum",
+        "name": "CommandMessage_commandType",
+        "symbols": [
+          "QuoteRequestCreateCmd",
+          "QuoteCreateCmd",
+          "OrderCreateCmd",
+          "OrderAcceptCmd",
+          "ExecutionCreateCmd",
+          "ExecutionWhackCmd",
+          "ExecutionBustCmd"
+        ]
+      },
+      "doc": "The type of command contained in this message"
+    },
+    {
+      "name": "command",
+      "type": "org.example.common.model.msg.CommandMessageCommand",
+      "doc": ""
+    }
+  ]
+
+}

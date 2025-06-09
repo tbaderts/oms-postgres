@@ -1,10 +1,10 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.4'
+	id 'org.springframework.boot' version '3.5.0'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.springdoc.openapi-gradle-plugin' version '1.9.0'
-	id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1' 
-	id 'org.openapi.generator' version '7.8.0'
+	//id 'org.springdoc.openapi-gradle-plugin' version '1.9.0'
+	id 'org.openapi.generator' version '7.13.0'
+	id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
 }
 
 group = 'org.example.oms'
@@ -36,24 +36,23 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
-	implementation 'org.springframework.cloud:spring-cloud-stream-schema-registry-client'
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation'io.confluent:kafka-avro-serializer:7.9.0'
-    implementation'org.apache.avro:avro:1.12.0'
+    //implementation'org.apache.avro:avro:1.12.0'
 	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
 	implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 	implementation 'io.github.jaspeen:ulid-java:0.2.0'
-	// implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
-    // implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	compileOnly 'org.apache.avro:avro-tools:1.12.0'
 }
 
 dependencyManagement {
@@ -62,22 +61,61 @@ dependencyManagement {
 	}
 }
 
+dependencies {
+    //avroTools group: 'org.apache.avro', name: 'avro-tools', version: '1.12.0'
+}
+
+configurations {
+    avroTools {
+        transitive = false
+    }
+}
+
 openApiGenerate {
     generatorName = "spring"
     inputSpec = "$projectDir/src/main/openapi/oms_api-docs.yml".toString()
     outputDir = "$buildDir/generated".toString()
     apiPackage = "org.example.common.api"
-    modelPackage = "org.example.common.model.tx"
+    modelPackage = "org.example.common.model.cmd"
     configOptions = [
         interfaceOnly: "true",
         useSpringBoot3: "true",
-        skipDefaultInterface: "true"
+        skipDefaultInterface: "true",
+		additionalModelTypeAnnotations: "@lombok.experimental.SuperBuilder @lombok.extern.jackson.Jacksonized"
     ]
 }
 
-// tasks.named("compileJava") {
-//     dependsOn tasks.named("openApiGenerate")
-// }
+task openApiGenerateAvro(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = "avro-schema"
+    inputSpec = "$projectDir/src/main/openapi/oms_api-docs.yml".toString()
+    outputDir = "$buildDir/generated-avro".toString()
+    configOptions = [
+        packageName: "org.example.common.model.msg"
+    ]
+}
+
+// https://medium.com/@jonassilveira_18601/how-to-configure-avro-with-gradle-a-practical-guide-eb1ab15815a4
+def avroGeneratedDir = layout.buildDirectory.dir("buildDir/")
+
+tasks.register("avroGenerate", JavaExec) {
+    classpath(configurations.avroTools)
+    args(
+        "compile",
+        "schema",
+        "$buildDir/generated-avro/*.avsc",
+        avroGeneratedDir.get().asFile.canonicalPath
+    )
+} 
+
+tasks.named("avroGenerate") {
+    dependsOn tasks.named("openApiGenerateAvro")
+}
+
+tasks.named("compileJava") {
+    dependsOn tasks.named("openApiGenerate")
+    dependsOn tasks.named("openApiGenerateAvro")
+	//dependsOn tasks.named("avroGenerate")
+}
 
 // Add the generated sources to the source set
 sourceSets.main.java.srcDirs += "$buildDir/generated/src/main/java"

@@ -26,11 +26,13 @@
       "name": "cashOrderQty",
       "type": [
         "null",
-        "bytes"
-      ],
-      "logicalType": "decimal",
-      "precision": 18,
-      "scale": 2
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 18,
+          "scale": 2
+        }
+      ]
     },
     {
       "name": "clOrdId",
@@ -58,9 +60,11 @@
       "name": "expireTime",
       "type": [
         "null",
-        "long"
-      ],
-      "logicalType": "timestamp-millis"
+        {
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ]
     },
     {
       "name": "handlInst",
@@ -102,10 +106,15 @@
     },
     {
       "name": "orderQty",
-      "type": [ "null", "bytes" ],
-      "logicalType": "decimal",
-      "precision": 18,
-      "scale": 2
+      "type": [
+        "null",
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 18,
+          "scale": 2
+        }
+      ]
     },
     {
       "name": "origClOrdId",
@@ -130,10 +139,15 @@
     },
     {
       "name": "price",
-      "type": [ "null", "bytes" ],
-      "logicalType": "decimal",
-      "precision": 18,
-      "scale": 2
+      "type": [
+        "null",
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 18,
+          "scale": 2
+        }
+      ]
     },
     {
       "name": "priceType",
@@ -199,9 +213,11 @@
       "name": "sendingTime",
       "type": [
         "null",
-        "long"
-      ],
-      "logicalType": "timestamp-millis"
+        {
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ]
     },
     {
       "name": "sessionId",
@@ -248,17 +264,27 @@
     },
     {
       "name": "stopPx",
-      "type": [ "null", "bytes" ],
-      "logicalType": "decimal",
-      "precision": 18,
-      "scale": 2
+      "type": [
+        "null",
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 18,
+          "scale": 2
+        }
+      ]
     },
     {
       "name": "strikePrice",
-      "type": [ "null", "bytes" ],
-      "logicalType": "decimal",
-      "precision": 18,
-      "scale": 2
+      "type": [
+        "null",
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 18,
+          "scale": 2
+        }
+      ]
     },
     {
       "name": "symbol",
@@ -272,9 +298,11 @@
       "name": "tifTimestamp",
       "type": [
         "null",
-        "long"
-      ],
-      "logicalType": "timestamp-millis"
+        {
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ]
     },
     {
       "name": "timeInForce",
@@ -299,9 +327,11 @@
       "name": "transactTime",
       "type": [
         "null",
-        "long"
-      ],
-      "logicalType": "timestamp-millis"
+        {
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ]
     },
     {
       "name": "tx",

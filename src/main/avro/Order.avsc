@@ -1,0 +1,54 @@
+{
+  "namespace": "org.example.common.model.msg",
+  "type": "record",
+  "doc": "",
+  "name": "Order",
+  "fields": [
+    {
+      "name": "symbol",
+      "type": ["null", "string"],
+      "doc": "",
+      "default": null
+    },
+    {
+      "name": "side",
+      "type": ["null", {
+        "type": "enum",
+        "name": "Order_side",
+        "symbols": [
+          "buy",
+          "sell"
+        ]
+      }],
+      "doc": "",
+      "default": null
+    },
+    {
+      "name": "price",
+      "type": ["null", "double"],
+      "doc": "",
+      "default": null
+    },
+    {
+      "name": "quantity",
+      "type": ["null", "double"],
+      "doc": "",
+      "default": null
+    },
+    {
+      "name": "timeInForce",
+      "type": ["null", {
+        "type": "enum",
+        "name": "Order_timeInForce",
+        "symbols": [
+          "GTC",
+          "IOC",
+          "FOK"
+        ]
+      }],
+      "doc": "",
+      "default": null
+    }
+  ]
+
+}

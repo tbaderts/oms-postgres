@@ -1,6 +1,8 @@
 spring:
   application:
     name: oms
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     url: ${DB_URL}
     username: ${DB_USER}
@@ -16,73 +18,38 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        ddl-auto: create-drop
+        ddl-auto: create
     show-sql: false
-  cloud:
-    function:
-        definition: consumer
-    stream:
-      bindings:
-        consumer-in-0:
-          destination: oms_transactions
-          group: ${CONSUMER_GROUP}
-          content-type: application/*+avro
-          consumer:
-            concurrency: 1
-            use-native-decoding: false
-        order-out-0:
-          destination: ${ORDER_TOPIC}
-          content-type: application/*+avro
-          producer:
-            use-native-encoding: false
-      kafka:
-        binder:
-          brokers: ${KAFKA_BROKERS}
-          configuration:
-            schema:
-              registry:
-                url: ${REGISTRY_URL}
-            transaction:
-              transaction-id-prefix: ${TX_ID_PREFIX}
-              enable: true
-              acks: all
-              retries: 3
-            isolation:
-              level: read_committed
-            consumer:
-              key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-              value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-              enableDlq: true
-              dlqName: ${DEAD_LETTER_TOPIC}
-              properties:
-                enable:
-                  idempotence: true
-                acks: all
-                retries: 3
-                max:
-                  in:
-                    flight:
-                      requests:
-                        per:
-                          connection: 1
-            producer:
-              key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-              value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-            enable:
-              idempotence: true
-            acks: all
-            retries: 3
-            max:
-              in:
-                flight:
-                  requests:
-                    per:
-                      connection: 1
-      default:
-        content-type: application/json
-        consumer:
-          concurrency: 1
+  kafka:
+    properties:
+      auto.register.schemas: true
+    bootstrap-servers: https://localhost:9092
+    consumer:
+      properties:
+        specific.avro.reader: true
+        spring.deserializer:
+          key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+          value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        schema.registry:
+          url: http://localhost:8081
+      group-id: orders-group
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: earliest
+    producer:
+      acks: all
+      retries: 3
+      properties:
+        retry.backoff.ms: 250
+        schema.registry:
+          url: http://localhost:8081
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 
+kafka:
+  order-topic: orders
+  command-topic: commands
+  
 management:
   endpoint:
     health:
@@ -96,7 +63,9 @@ management:
       probability: 1.0
     
 springdoc:
-    show-actuator: false
+  show-actuator: false
+  swagger-ui:
+    use-root-path: true
 
 tracing:
   url: ${TRACING_URL}
