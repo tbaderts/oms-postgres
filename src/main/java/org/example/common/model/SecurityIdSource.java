@@ -3,7 +3,7 @@ package org.example.common.model;
 import lombok.Getter;
 
 @Getter
-public enum SecurityIDSource {
+public enum SecurityIdSource {
     ISIN("4"),
     RIC("5"),
     EXCHANGE_SYMBOL("8"),
@@ -11,7 +11,7 @@ public enum SecurityIDSource {
 
     private final String fixValue;
 
-    SecurityIDSource(String fixValue) {
+    SecurityIdSource(String fixValue) {
         this.fixValue = fixValue;
     }
 }

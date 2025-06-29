@@ -9,18 +9,7 @@
     },
     {
       "name": "cancelState",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "CancelState",
-          "symbols": [
-            "CXL",
-            "PCXL",
-            "PMOD",
-            "REJ"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.CancelState" ]
     },
     {
       "name": "cashOrderQty",
@@ -44,17 +33,7 @@
     },
     {
       "name": "execInst",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "ExecInst",
-          "symbols": [
-            "NO_CROSS",
-            "OK_TO_CROSS",
-            "MID_PEG"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.ExecInst" ]
     },
     {
       "name": "expireTime",
@@ -68,17 +47,7 @@
     },
     {
       "name": "handlInst",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "HandlInst",
-          "symbols": [
-            "AUTO",
-            "BROKER_INTERVENTION_OK",
-            "MANUAL"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.HandlInst" ]
     },
     {
       "name": "maturityMonthYear",
@@ -86,19 +55,7 @@
     },
     {
       "name": "ordType",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "OrdType",
-          "symbols": [
-            "MARKET",
-            "LIMIT",
-            "STOP",
-            "STOP_LIMIT",
-            "MARKET_ON_CLOSE"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.OrdType" ]
     },
     {
       "name": "orderId",
@@ -126,16 +83,7 @@
     },
     {
       "name": "positionEffect",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "PositionEffect",
-          "symbols": [
-            "OPEN",
-            "CLOSE"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.PositionEffect" ]
     },
     {
       "name": "price",
@@ -151,21 +99,7 @@
     },
     {
       "name": "priceType",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "PriceType",
-          "symbols": [
-            "PERCENTAGE",
-            "PER_UNIT",
-            "FIXED_AMOUNT",
-            "DISCOUNT",
-            "PREMIUM",
-            "SPREAD",
-            "YIELD"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.PriceType" ]
     },
     {
       "name": "putOrCall",
@@ -185,29 +119,11 @@
     },
     {
       "name": "securityIDSource",
-      "type": [ "null", "string" ]
+      "type": [ "null", "org.example.common.model.msg.SecurityIDSource" ]
     },
     {
       "name": "securityId",
       "type": [ "null", "string" ]
-    },
-    {
-      "name": "securityType",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "SecurityType",
-          "symbols": [
-            "CS",
-            "FUT",
-            "OPT",
-            "ETF",
-            "ETN",
-            "MF",
-            "CORP"
-          ]
-        }
-      ]
     },
     {
       "name": "sendingTime",
@@ -229,38 +145,11 @@
     },
     {
       "name": "side",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "Side",
-          "symbols": [
-            "BUY",
-            "SELL",
-            "SELL_SHORT",
-            "SUBSCRIBE",
-            "REDEEM"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.Side" ]
     },
     {
       "name": "state",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "State",
-          "symbols": [
-            "NEW",
-            "UNACK",
-            "LIVE",
-            "FILLED",
-            "CXL",
-            "REJ",
-            "CLOSED",
-            "EXP"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.State" ]
     },
     {
       "name": "stopPx",
@@ -306,22 +195,7 @@
     },
     {
       "name": "timeInForce",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "TimeInForce",
-          "symbols": [
-            "DAY",
-            "GOOD_TILL_CANCEL",
-            "AT_THE_OPENING",
-            "IMMEDIATE_OR_CANCEL",
-            "FILL_OR_KILL",
-            "GOOD_TILL_CROSSING",
-            "GOOD_TILL_DATE",
-            "AT_THE_CLOSE"
-          ]
-        }
-      ]
+      "type": [ "null", "org.example.common.model.msg.TimeInForce" ]
     },
     {
       "name": "transactTime",
@@ -334,21 +208,7 @@
       ]
     },
     {
-      "name": "tx",
-      "type": [ "null",
-        {
-          "type": "enum",
-          "name": "Tx",
-          "symbols": [
-            "NO",
-            "AO",
-            "RO"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "txNr",
+      "name": "eventId",
       "type": [ "null", "long" ]
     },
     {

@@ -38,7 +38,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation'io.confluent:kafka-avro-serializer:7.9.0'
-    //implementation'org.apache.avro:avro:1.12.0'
 	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
 	implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
@@ -46,13 +45,14 @@ dependencies {
 	implementation 'io.github.jaspeen:ulid-java:0.2.0'
 	implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
+	implementation 'org.mapstruct:mapstruct:1.6.3'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	compileOnly 'org.apache.avro:avro-tools:1.12.0'
 }
 
 dependencyManagement {
@@ -73,7 +73,7 @@ configurations {
 
 openApiGenerate {
     generatorName = "spring"
-    inputSpec = "$projectDir/src/main/openapi/oms_api-docs.yml".toString()
+    inputSpec = "$projectDir/src/main/openapi/oms-cmd-api.yml".toString()
     outputDir = "$buildDir/generated".toString()
     apiPackage = "org.example.common.api"
     modelPackage = "org.example.common.model.cmd"
@@ -81,13 +81,15 @@ openApiGenerate {
         interfaceOnly: "true",
         useSpringBoot3: "true",
         skipDefaultInterface: "true",
+		enumPropertyNaming: "original",
+        modelNameSuffix: "",
 		additionalModelTypeAnnotations: "@lombok.experimental.SuperBuilder @lombok.extern.jackson.Jacksonized"
     ]
 }
 
 task openApiGenerateAvro(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
     generatorName = "avro-schema"
-    inputSpec = "$projectDir/src/main/openapi/oms_api-docs.yml".toString()
+    inputSpec = "$projectDir/src/main/openapi/oms-cmd-api.yml".toString()
     outputDir = "$buildDir/generated-avro".toString()
     configOptions = [
         packageName: "org.example.common.model.msg"

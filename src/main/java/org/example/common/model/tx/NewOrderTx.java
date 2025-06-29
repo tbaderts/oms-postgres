@@ -10,7 +10,7 @@ import org.example.common.model.HandlInst;
 import org.example.common.model.OrdType;
 import org.example.common.model.PositionEffect;
 import org.example.common.model.PriceType;
-import org.example.common.model.SecurityIDSource;
+import org.example.common.model.SecurityIdSource;
 import org.example.common.model.SecurityType;
 import org.example.common.model.Side;
 import org.example.common.model.TimeInForce;
@@ -40,7 +40,7 @@ private String sessionId;
     private ExecInst execInst;
     @Enumerated(EnumType.STRING)
     private HandlInst handlInst;
-    private SecurityIDSource securityIDSource;
+    private SecurityIdSource securityIdSource;
     private BigDecimal orderQty;
     private BigDecimal cashOrderQty;
     private PositionEffect positionEffect;

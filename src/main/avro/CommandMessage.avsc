@@ -5,23 +5,6 @@
   "name": "CommandMessage",
   "fields": [
     {
-      "name": "commandType",
-      "type": {
-        "type": "enum",
-        "name": "CommandMessage_commandType",
-        "symbols": [
-          "QuoteRequestCreateCmd",
-          "QuoteCreateCmd",
-          "OrderCreateCmd",
-          "OrderAcceptCmd",
-          "ExecutionCreateCmd",
-          "ExecutionWhackCmd",
-          "ExecutionBustCmd"
-        ]
-      },
-      "doc": "The type of command contained in this message"
-    },
-    {
       "name": "command",
       "type": [
         "org.example.common.model.msg.QuoteRequestCreateCmd",
@@ -35,5 +18,4 @@
       "doc": "Polymorphic command type, can be any supported command record"
     }
   ]
-
 }

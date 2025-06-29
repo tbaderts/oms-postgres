@@ -59,7 +59,7 @@ public class Order implements Serializable {
     @Enumerated(EnumType.STRING)
     private HandlInst handlInst;
     @Enumerated(EnumType.STRING)
-    private SecurityIDSource securityIDSource;
+    private SecurityIdSource securityIdSource;
     private BigDecimal orderQty;
     private BigDecimal cashOrderQty;
     @Enumerated(EnumType.STRING)

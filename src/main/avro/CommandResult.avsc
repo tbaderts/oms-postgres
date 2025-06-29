@@ -12,14 +12,7 @@
     },
     {
       "name": "status",
-      "type": ["null", {
-        "type": "enum",
-        "name": "CommandResult_status",
-        "symbols": [
-          "OK",
-          "FAILED"
-        ]
-      }],
+      "type": ["null", "org.example.common.model.msg.CommandStatus"],
       "doc": "",
       "default": null
     },

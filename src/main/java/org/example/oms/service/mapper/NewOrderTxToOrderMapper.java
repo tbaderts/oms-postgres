@@ -24,7 +24,7 @@ public class NewOrderTxToOrderMapper {
                 .account(newOrderTx.getAccount())
                 .execInst(newOrderTx.getExecInst())
                 .handlInst(newOrderTx.getHandlInst())
-                .securityIDSource(newOrderTx.getSecurityIDSource())
+                .securityIdSource(newOrderTx.getSecurityIdSource())
                 .orderQty(newOrderTx.getOrderQty())
                 .cashOrderQty(newOrderTx.getCashOrderQty())
                 .positionEffect(newOrderTx.getPositionEffect())

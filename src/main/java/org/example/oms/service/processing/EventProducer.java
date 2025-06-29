@@ -15,7 +15,6 @@ import org.example.common.model.msg.State;
 import org.example.common.model.msg.TimeInForce;
 import org.example.common.model.msg.PositionEffect;
 import org.example.common.model.msg.PriceType;
-import org.example.common.model.msg.Tx;
 import org.example.oms.model.ProcessingContext;
 import org.example.oms.service.infra.repository.OrderOutboxRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,7 +84,6 @@ public class EventProducer {
                 .setState(State.NEW)
                 .setOrdType(OrdType.MARKET)
                 .setClOrdId(order.getClOrdId())
-                .setTx(Tx.NO)
                 .setCashOrderQty(order.getOrderQty())
                 .setExDestination("X")
                 .setExecInst(ExecInst.NO_CROSS)
@@ -112,12 +110,10 @@ public class EventProducer {
     private TimeInForce mapTimeInForce(org.example.common.model.TimeInForce timeInForce) {
         return switch (timeInForce) {
             case DAY -> TimeInForce.DAY;
-            case GOOD_TILL_CANCEL -> TimeInForce.GOOD_TILL_CANCEL;
-            case GOOD_TILL_CROSSING -> TimeInForce.GOOD_TILL_CROSSING;
-            case AT_THE_OPENING -> TimeInForce.AT_THE_OPENING;
-            case IMMEDIATE_OR_CANCEL -> TimeInForce.IMMEDIATE_OR_CANCEL;
-            case FILL_OR_KILL -> TimeInForce.FILL_OR_KILL;
-            case GOOD_TILL_DATE -> TimeInForce.GOOD_TILL_DATE;
+            case GOOD_TILL_CANCEL -> TimeInForce.GTC;
+            case IMMEDIATE_OR_CANCEL -> TimeInForce.IOC;
+            case FILL_OR_KILL -> TimeInForce.FOK;
+            case GOOD_TILL_DATE -> TimeInForce.GTD;
             case AT_THE_CLOSE -> TimeInForce.AT_THE_CLOSE;
             default -> throw new IllegalArgumentException(String.format("Unknown time in force: %s", timeInForce));
         };
