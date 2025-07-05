@@ -28,8 +28,12 @@ public class OrderOutbox {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_outbox_sequence")
-    @SequenceGenerator(name = "order_outbox_sequence", sequenceName = "order_outbox_seq", allocationSize = 1)
+    @SequenceGenerator(
+            name = "order_outbox_sequence",
+            sequenceName = "order_outbox_seq",
+            allocationSize = 1)
     private Long id;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb", name = "outbound_order")
     private Order order;
@@ -38,5 +42,4 @@ public class OrderOutbox {
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.JSON_STYLE);
     }
-
 }

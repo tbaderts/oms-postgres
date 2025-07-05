@@ -8,10 +8,7 @@ public class OrderAcceptCmdTest {
 
     @Test
     public void testOrderAcceptCmd() {
-        OrderAcceptCmd cmd = OrderAcceptCmd.builder()
-                .version("1.0")
-                .orderId("12345")
-                .build();
+        OrderAcceptCmd cmd = OrderAcceptCmd.builder().version("1.0").orderId("12345").build();
 
         System.out.println("OrderAcceptCmd created successfully: " + JsonHelper.toJson(cmd));
     }

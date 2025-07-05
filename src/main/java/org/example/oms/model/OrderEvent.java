@@ -32,14 +32,21 @@ public class OrderEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_event_sequence")
-    @SequenceGenerator(name = "order_event_sequence", sequenceName = "order_event_seq", allocationSize = 1)
+    @SequenceGenerator(
+            name = "order_event_sequence",
+            sequenceName = "order_event_seq",
+            allocationSize = 1)
     private Long id;
+
     private String orderId;
+
     @Enumerated(EnumType.STRING)
     private Event event;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Transaction transaction;
+
     private LocalDateTime timeStamp;
 
     @Override

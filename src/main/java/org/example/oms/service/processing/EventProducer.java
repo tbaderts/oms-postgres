@@ -10,11 +10,11 @@ import org.example.common.model.msg.ExecInst;
 import org.example.common.model.msg.HandlInst;
 import org.example.common.model.msg.OrdType;
 import org.example.common.model.msg.OrderMessage;
+import org.example.common.model.msg.PositionEffect;
+import org.example.common.model.msg.PriceType;
 import org.example.common.model.msg.Side;
 import org.example.common.model.msg.State;
 import org.example.common.model.msg.TimeInForce;
-import org.example.common.model.msg.PositionEffect;
-import org.example.common.model.msg.PriceType;
 import org.example.oms.model.ProcessingContext;
 import org.example.oms.service.infra.repository.OrderOutboxRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +36,11 @@ public class EventProducer {
     private final KafkaTemplate<String, OrderMessage> kafkaTemplate;
     private final String topic;
 
-    public EventProducer(OrderOutboxRepository orderOutboxRepository, ApplicationEventPublisher eventPublisher,
-            KafkaTemplate<String, OrderMessage> kafkaTemplate, @Value("${kafka.order-topic}") String topic) {
+    public EventProducer(
+            OrderOutboxRepository orderOutboxRepository,
+            ApplicationEventPublisher eventPublisher,
+            KafkaTemplate<String, OrderMessage> kafkaTemplate,
+            @Value("${kafka.order-topic}") String topic) {
         this.orderOutboxRepository = orderOutboxRepository;
         this.eventPublisher = eventPublisher;
         this.kafkaTemplate = kafkaTemplate;
@@ -48,17 +51,22 @@ public class EventProducer {
     @Observed(name = "oms.event-producer.produce-event")
     public void produceEvent(ProcessingContext context) {
         OrderMessage orderMessage = convertToOrderMessage(context.getOrder());
-        ProducerRecord<String, OrderMessage> producerRecord = new ProducerRecord<>(topic, orderMessage);
-        CompletableFuture<SendResult<String, OrderMessage>> completableFuture = kafkaTemplate.send(producerRecord);
+        ProducerRecord<String, OrderMessage> producerRecord =
+                new ProducerRecord<>(topic, orderMessage);
+        CompletableFuture<SendResult<String, OrderMessage>> completableFuture =
+                kafkaTemplate.send(producerRecord);
         log.info("Sending kafka message on topic {}", topic);
 
-        completableFuture.whenComplete((result, ex) -> {
-            if (ex == null) {
-                log.info("Kafka message successfully sent: {}", result.getProducerRecord().value());
-            } else {
-                log.error("Error while sending kafka message: {}", producerRecord, ex);
-            }
-        });
+        completableFuture.whenComplete(
+                (result, ex) -> {
+                    if (ex == null) {
+                        log.info(
+                                "Kafka message successfully sent: {}",
+                                result.getProducerRecord().value());
+                    } else {
+                        log.error("Error while sending kafka message: {}", producerRecord, ex);
+                    }
+                });
 
         // OrderOutbox orderOutbox =
         // OrderOutbox.builder().orderMessage(OrderMessage.builder()
@@ -95,7 +103,7 @@ public class EventProducer {
                 .setPositionEffect(PositionEffect.OPEN)
                 .setPutOrCall(0)
                 .setPriceType(PriceType.PER_UNIT)
-                //.setSucurityDesc("")
+                // .setSucurityDesc("")
                 .build();
     }
 
@@ -103,7 +111,9 @@ public class EventProducer {
         return switch (side) {
             case BUY -> Side.BUY;
             case SELL -> Side.SELL;
-            default -> throw new IllegalArgumentException(String.format("Unknown time in force: %s", side));
+            default ->
+                    throw new IllegalArgumentException(
+                            String.format("Unknown time in force: %s", side));
         };
     }
 
@@ -115,7 +125,9 @@ public class EventProducer {
             case FILL_OR_KILL -> TimeInForce.FOK;
             case GOOD_TILL_DATE -> TimeInForce.GTD;
             case AT_THE_CLOSE -> TimeInForce.AT_THE_CLOSE;
-            default -> throw new IllegalArgumentException(String.format("Unknown time in force: %s", timeInForce));
+            default ->
+                    throw new IllegalArgumentException(
+                            String.format("Unknown time in force: %s", timeInForce));
         };
     }
 }

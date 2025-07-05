@@ -22,8 +22,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class ProcessingContext {
 
-    @NonNull
-    private Transaction transaction;
+    @NonNull private Transaction transaction;
     private Order order;
     private Fill fill;
     private Quote quote;

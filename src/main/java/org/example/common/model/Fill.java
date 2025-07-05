@@ -29,6 +29,7 @@ public class Fill {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fill_sequence")
     @SequenceGenerator(name = "fill_sequence", sequenceName = "fill_seq", allocationSize = 1)
     private Long id;
+
     private String orderId;
     private String fillId;
     private BigDecimal avgPx;

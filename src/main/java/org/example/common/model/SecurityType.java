@@ -10,7 +10,8 @@ public enum SecurityType {
     ETF("Exchange Traded Fund"),
     ETN("Exchange Traded Note"),
     MF("Mutual Fund"),
-    CORP("Corporate Bond"),;
+    CORP("Corporate Bond"),
+    ;
 
     private final String fixValue;
 

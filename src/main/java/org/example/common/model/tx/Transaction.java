@@ -15,9 +15,9 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = NewOrderTx.class, name = "newOrderTx"),
-        @JsonSubTypes.Type(value = AcceptOrderTx.class, name = "acceptOrderTx"),
-        @JsonSubTypes.Type(value = RejectOrderTx.class, name = "rejectOrderTx")
+    @JsonSubTypes.Type(value = NewOrderTx.class, name = "newOrderTx"),
+    @JsonSubTypes.Type(value = AcceptOrderTx.class, name = "acceptOrderTx"),
+    @JsonSubTypes.Type(value = RejectOrderTx.class, name = "rejectOrderTx")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Transaction {

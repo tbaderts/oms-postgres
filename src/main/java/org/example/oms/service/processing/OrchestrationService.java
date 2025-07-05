@@ -19,8 +19,11 @@ public class OrchestrationService {
     private final PersistenceService persistenceService;
     private final EventProducer eventProducer;
 
-    public OrchestrationService(TransactionService transactionService, EventProcessor eventProcessor,
-            ValidationService validationService, PersistenceService persistenceService,
+    public OrchestrationService(
+            TransactionService transactionService,
+            EventProcessor eventProcessor,
+            ValidationService validationService,
+            PersistenceService persistenceService,
             EventProducer eventProducer) {
         this.transactionService = transactionService;
         this.eventProcessor = eventProcessor;
@@ -38,8 +41,10 @@ public class OrchestrationService {
         persistenceService.persist(context);
         eventProducer.produceEvent(context);
 
-        return TxInfo.builder().message("Processing completed")
+        return TxInfo.builder()
+                .message("Processing completed")
                 .orderId(context.getOrder().getOrderId())
-                .txState(TxState.OK).build();
+                .txState(TxState.OK)
+                .build();
     }
 }

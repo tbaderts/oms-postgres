@@ -1,27 +1,27 @@
 package org.example.common.model.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+
 import org.example.common.model.Order;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMapperTest {
     private final OrderMapper mapper = Mappers.getMapper(OrderMapper.class);
 
     @Test
     void testToOrderAndBack() {
-        org.example.common.model.cmd.Order cmdOrder = org.example.common.model.cmd.Order.builder()
-            .orderId("OID123")
-            .orderQty(new BigDecimal("100.5"))
-            .sendingTime(OffsetDateTime.now())
-            .expireTime(OffsetDateTime.now().plusDays(1))
-            // ... set other fields as needed ...
-            .build();
+        org.example.common.model.cmd.Order cmdOrder =
+                org.example.common.model.cmd.Order.builder()
+                        .orderId("OID123")
+                        .orderQty(new BigDecimal("100.5"))
+                        .sendingTime(OffsetDateTime.now())
+                        .expireTime(OffsetDateTime.now().plusDays(1))
+                        // ... set other fields as needed ...
+                        .build();
 
         Order order = mapper.toOrder(cmdOrder);
         assertEquals(cmdOrder.getOrderId(), order.getOrderId());

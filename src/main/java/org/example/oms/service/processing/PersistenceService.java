@@ -1,14 +1,12 @@
 package org.example.oms.service.processing;
 
+import org.example.common.model.Order;
+import org.example.oms.model.ProcessingContext;
+import org.example.oms.service.infra.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.micrometer.observation.annotation.Observed;
-
-import org.example.common.model.Order;
-import org.example.oms.model.ProcessingContext;
-import org.example.oms.service.infra.repository.OrderRepository;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Service

@@ -15,7 +15,7 @@ import lombok.extern.jackson.Jacksonized;
 @Getter
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AcceptOrderTx  extends Transaction {
+public class AcceptOrderTx extends Transaction {
 
     @Override
     public String toString() {

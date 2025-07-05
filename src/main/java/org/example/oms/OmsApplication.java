@@ -11,13 +11,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories("org.example.oms.service.infra.repository")
 @EntityScan({"org.example.common.model", "org.example.oms.model"})
 @EnableTransactionManagement
-@ComponentScan(basePackages = {
-		"org.example.oms",
-		"org.example.common"
-})
+@ComponentScan(basePackages = {"org.example.oms", "org.example.common"})
 public class OmsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OmsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(OmsApplication.class, args);
+    }
 }

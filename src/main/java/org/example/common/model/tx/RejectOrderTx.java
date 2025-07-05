@@ -12,6 +12,4 @@ import lombok.extern.jackson.Jacksonized;
 @Getter
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RejectOrderTx extends Transaction {
-
-}
+public class RejectOrderTx extends Transaction {}

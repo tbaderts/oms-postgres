@@ -24,7 +24,8 @@ public class TransactionService {
     private final NewOrderTxToOrderMapper newOrderTxToOrderMapper;
     private final OrderRepository orderRepository;
 
-    public TransactionService(NewOrderTxToOrderMapper newOrderTxToOrderMapper, OrderRepository orderRepository) {
+    public TransactionService(
+            NewOrderTxToOrderMapper newOrderTxToOrderMapper, OrderRepository orderRepository) {
         this.newOrderTxToOrderMapper = newOrderTxToOrderMapper;
         this.orderRepository = orderRepository;
     }
@@ -41,7 +42,8 @@ public class TransactionService {
             context.setOrder(order);
             context.setEvent(Event.NEW_ORDER);
         } else if (transaction instanceof AcceptOrderTx acceptOrderTx) {
-            Optional<Order> orderOptional = orderRepository.findByOrderId(acceptOrderTx.getOrderId());
+            Optional<Order> orderOptional =
+                    orderRepository.findByOrderId(acceptOrderTx.getOrderId());
             if (orderOptional.isPresent()) {
                 Order order = orderOptional.get();
                 order.setTx(Tx.AO);
@@ -56,7 +58,8 @@ public class TransactionService {
             }
 
         } else {
-            throw new IllegalArgumentException("Unsupported transaction type: " + transaction.getClass().getName());
+            throw new IllegalArgumentException(
+                    "Unsupported transaction type: " + transaction.getClass().getName());
         }
     }
 }

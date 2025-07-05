@@ -31,15 +31,18 @@ import lombok.extern.jackson.Jacksonized;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewOrderTx extends Transaction {
 
-private String sessionId;
+    private String sessionId;
     private String parentOrderId;
     private String clOrdId;
     private LocalDateTime sendingTime;
     private String account;
+
     @Enumerated(EnumType.STRING)
     private ExecInst execInst;
+
     @Enumerated(EnumType.STRING)
     private HandlInst handlInst;
+
     private SecurityIdSource securityIdSource;
     private BigDecimal orderQty;
     private BigDecimal cashOrderQty;

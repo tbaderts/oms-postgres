@@ -33,7 +33,8 @@ public class QuoteController {
     @GetMapping("/{id}")
     @Hidden
     public ResponseEntity<Quote> getQuoteById(@PathVariable Long id) {
-        return quoteRepository.findById(id)
+        return quoteRepository
+                .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

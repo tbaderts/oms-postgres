@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonHelper {
 
-    private final static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static String toJson(Object object) {
         try {
@@ -13,5 +13,4 @@ public class JsonHelper {
             throw new RuntimeException(e);
         }
     }
-
 }

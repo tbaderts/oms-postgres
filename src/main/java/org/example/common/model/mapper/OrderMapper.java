@@ -1,9 +1,10 @@
 package org.example.common.model.mapper;
 
-import org.example.common.model.Order;
-import org.mapstruct.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+
+import org.example.common.model.Order;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {

@@ -29,6 +29,7 @@ public class Quote {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quote_sequence")
     @SequenceGenerator(name = "quote_sequence", sequenceName = "quote_seq", allocationSize = 1)
     private Long id;
+
     private String symbol;
     private BigDecimal price;
     private LocalDateTime timestamp;

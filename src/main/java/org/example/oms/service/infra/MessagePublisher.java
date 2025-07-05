@@ -1,6 +1,7 @@
 package org.example.oms.service.infra;
 
-
+import org.example.oms.model.ProcessingEvent;
+import org.example.oms.service.infra.repository.OrderOutboxRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,10 +9,6 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import io.micrometer.observation.annotation.Observed;
-
-import org.example.oms.model.ProcessingEvent;
-import org.example.oms.service.infra.repository.OrderOutboxRepository;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -25,8 +22,8 @@ public class MessagePublisher {
     }
 
     /**
-     * This event listener will only be triggered after the transaction in
-     * EventProducerImpl has successfully committed.
+     * This event listener will only be triggered after the transaction in EventProducerImpl has
+     * successfully committed.
      */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)

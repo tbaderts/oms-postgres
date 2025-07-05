@@ -9,14 +9,18 @@ public class CommandMsgTest {
 
     @Test
     void testCreateCommandMessage() {
-        CommandMessage commandMessage = CommandMessage.newBuilder()
-                .setCommand(OrderCreateCmd.newBuilder()
-                        .setOrder(Order.newBuilder()
-                                .setClOrdId("20250621-test-001")
-                                .setSessionId("test-session")
-                                .build())
-                        .build())
-                .build();
+        CommandMessage commandMessage =
+                CommandMessage.newBuilder()
+                        .setCommand(
+                                OrderCreateCmd.newBuilder()
+                                        .setType(OrderCreateCmd.class.getSimpleName())
+                                        .setOrder(
+                                                Order.newBuilder()
+                                                        .setClOrdId("20250621-test-001")
+                                                        .setSessionId("test-session")
+                                                        .build())
+                                        .build())
+                        .build();
         System.out.println("CommandMessage created: " + commandMessage);
     }
 }

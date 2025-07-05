@@ -31,20 +31,33 @@ public class CommandController implements ExecuteApi {
     }
 
     @Override
-    @Operation(summary = "Execute a command", requestBody = @RequestBody(content = @Content(mediaType = "application/json", examples = {
-            @ExampleObject(name = "OrderCreateCmd", summary = "Order create command", value = "{\"type\":\"OrderCreateCmd\",\"version\":\"1.0.0\",\"order\":{\"orderId\":null,\"parentOrderId\":null,\"rootOrderId\":null,\"sessionId\":\"test-session\",\"clOrdId\":\"20250621-test-001\",\"sendingTime\":null,\"account\":\"test-account\",\"origClOrdId\":null,\"execInst\":\"NO_CROSS\",\"handlInst\":\"AUTO\",\"securityIdSource\":\"ISIN\",\"orderQty\":100.00,\"cashOrderQty\":null,\"positionEffect\":null,\"securityDesc\":\"desc\",\"securityType\":null,\"maturityMonthYear\":null,\"strikePrice\":null,\"priceType\":\"PER_UNIT\",\"putOrCall\":null,\"underlyingSecurityType\":null,\"ordType\":\"LIMIT\",\"price\":172.06,\"stopPx\":null,\"securityId\":\"US0378331005\",\"side\":\"BUY\",\"symbol\":\"AAPL\",\"timeInForce\":\"DAY\",\"exDestination\":\"XNAS\",\"settlCurrency\":\"USD\",\"expireTime\":null,\"securityExchange\":\"XNAS\",\"text\":\"Test order\"}}"),
-            @ExampleObject(name = "OrderAcceptCmd", summary = "Order accept command", value = "{\"type\":\"OrderAcceptCmd\",\"version\":\"1.0\",\"orderId\":\"12345\"}")
-    })))
+    @Operation(
+            summary = "Execute a command",
+            requestBody =
+                    @RequestBody(
+                            content =
+                                    @Content(
+                                            mediaType = "application/json",
+                                            examples = {
+                                                @ExampleObject(
+                                                        name = "OrderCreateCmd",
+                                                        summary = "Order create command",
+                                                        value =
+                                                                "{\"type\":\"OrderCreateCmd\",\"version\":\"1.0.0\",\"order\":{\"orderId\":null,\"parentOrderId\":null,\"rootOrderId\":null,\"sessionId\":\"test-session\",\"clOrdId\":\"20250621-test-001\",\"sendingTime\":null,\"account\":\"test-account\",\"origClOrdId\":null,\"execInst\":\"NO_CROSS\",\"handlInst\":\"AUTO\",\"securityIdSource\":\"ISIN\",\"orderQty\":100.00,\"cashOrderQty\":null,\"positionEffect\":null,\"securityDesc\":\"desc\",\"securityType\":null,\"maturityMonthYear\":null,\"strikePrice\":null,\"priceType\":\"PER_UNIT\",\"putOrCall\":null,\"underlyingSecurityType\":null,\"ordType\":\"LIMIT\",\"price\":172.06,\"stopPx\":null,\"securityId\":\"US0378331005\",\"side\":\"BUY\",\"symbol\":\"AAPL\",\"timeInForce\":\"DAY\",\"exDestination\":\"XNAS\",\"settlCurrency\":\"USD\",\"expireTime\":null,\"securityExchange\":\"XNAS\",\"text\":\"Test"
+                                                                    + " order\"}}"),
+                                                @ExampleObject(
+                                                        name = "OrderAcceptCmd",
+                                                        summary = "Order accept command",
+                                                        value =
+                                                                "{\"type\":\"OrderAcceptCmd\",\"version\":\"1.0\",\"orderId\":\"12345\"}")
+                                            })))
     public ResponseEntity<CommandResult> executeCommand(@Valid Command command) {
         log.info("Received command: {}", command);
         if (command instanceof OrderCreateCmd orderCreateCmd) {
             Order order = orderMapper.toOrder(orderCreateCmd.getOrder());
             log.info("Mapped OrderCreateCmd to Order entity: {}", order);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(CommandResult.builder()
-                .id("")
-                .status(CommandStatus.OK)
-                .message("")
-                .build());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(CommandResult.builder().id("").status(CommandStatus.OK).message("").build());
     }
 }

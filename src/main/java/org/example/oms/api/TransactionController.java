@@ -31,7 +31,9 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<TxInfo> execute(@RequestBody Transaction transaction) {
         log.info("Received transaction: {}", transaction);
-        TxInfo txInfo = orchestrationService.process(ProcessingContext.builder().transaction(transaction).build());
+        TxInfo txInfo =
+                orchestrationService.process(
+                        ProcessingContext.builder().transaction(transaction).build());
         return ResponseEntity.status(HttpStatus.CREATED).body(txInfo);
     }
 
