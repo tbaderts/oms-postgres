@@ -3,6 +3,7 @@ package org.example.oms.service.business;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -29,6 +30,9 @@ public class StateMachine {
 
     // Pure function to validate a transition
     public static boolean isValidTransition(State from, State to) {
+        if (from == null || to == null) {
+            return false;
+        }
         return Optional.ofNullable(VALID_TRANSITIONS.get(from))
                 .map(validStates -> validStates.contains(to))
                 .orElse(false);
@@ -48,9 +52,11 @@ public class StateMachine {
 
     // Composition of transitions
     public static Optional<State> transitionSequence(State initial, State... transitions) {
+        Objects.requireNonNull(initial, "Initial state cannot be null");
         Optional<State> current = Optional.of(initial);
 
         for (State nextState : transitions) {
+            Objects.requireNonNull(nextState, "Transition states cannot be null");
             current = current.flatMap(state -> transition(state, nextState));
         }
 

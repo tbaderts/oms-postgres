@@ -1,5 +1,6 @@
 package org.example.oms.service.processing;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 
@@ -12,6 +13,7 @@ import org.example.common.model.msg.OrdType;
 import org.example.common.model.msg.OrderMessage;
 import org.example.common.model.msg.PositionEffect;
 import org.example.common.model.msg.PriceType;
+import org.example.common.model.msg.SecurityIDSource;
 import org.example.common.model.msg.Side;
 import org.example.common.model.msg.State;
 import org.example.common.model.msg.TimeInForce;
@@ -88,6 +90,9 @@ public class EventProducer {
                 .setTransactTime(Instant.now())
                 .setAccount(order.getAccount())
                 .setSymbol(order.getSymbol())
+                .setSecurityId(order.getSecurityId())
+                .setSecurityDesc(order.getSecurityDesc())
+                .setSecurityIDSource(mapSecurityIdSource(order.getSecurityIdSource()))
                 .setCancelState(CancelState.PCXL)
                 .setState(State.NEW)
                 .setOrdType(OrdType.MARKET)
@@ -103,7 +108,17 @@ public class EventProducer {
                 .setPositionEffect(PositionEffect.OPEN)
                 .setPutOrCall(0)
                 .setPriceType(PriceType.PER_UNIT)
-                // .setSucurityDesc("")
+                .setSecurityExchange(order.getSecurityExchange())
+                .setSendingTime(Instant.now())
+                .setSessionId(order.getSessionId())
+                .setSettlCurrency(order.getSettlCurrency())
+                .setStopPx(order.getStopPx() != null ? order.getStopPx() : BigDecimal.ZERO)
+                .setStrikePrice(
+                        order.getStrikePrice() != null ? order.getStrikePrice() : BigDecimal.ZERO)
+                .setText(order.getText())
+                .setTifTimestamp(Instant.now())
+                .setEventId(1L)
+                .setUnderlyingSecurityType("n/a")
                 .build();
     }
 
@@ -128,6 +143,19 @@ public class EventProducer {
             default ->
                     throw new IllegalArgumentException(
                             String.format("Unknown time in force: %s", timeInForce));
+        };
+    }
+
+    private SecurityIDSource mapSecurityIdSource(
+            org.example.common.model.SecurityIdSource securityIdSource) {
+        return switch (securityIdSource) {
+            case RIC -> SecurityIDSource.RIC;
+            case ISIN -> SecurityIDSource.ISIN;
+            case EXCHANGE_SYMBOL -> SecurityIDSource.EXCHANGE_SYMBOL;
+            case BLOOMBERG_SYMBOL -> SecurityIDSource.BLOOMBERG_SYMBOL;
+            default ->
+                    throw new IllegalArgumentException(
+                            String.format("Unknown security ID source: %s", securityIdSource));
         };
     }
 }

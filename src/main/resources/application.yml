@@ -15,10 +15,11 @@ spring:
       enabled: false
   jpa:
     generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        ddl-auto: create
     show-sql: false
   kafka:
     properties:
