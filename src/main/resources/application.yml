@@ -14,7 +14,6 @@ spring:
     virtual:
       enabled: false
   jpa:
-    generate-ddl: true
     hibernate:
       ddl-auto: create-drop
     properties:
@@ -24,7 +23,7 @@ spring:
   kafka:
     properties:
       auto.register.schemas: true
-    bootstrap-servers: https://localhost:9092
+    bootstrap-servers: localhost:9092
     consumer:
       properties:
         specific.avro.reader: true
@@ -51,7 +50,7 @@ kafka:
   enabled: false
   order-topic: orders
   command-topic: commands
-  
+
 management:
   endpoint:
     health:
@@ -63,7 +62,7 @@ management:
   tracing:
     sampling:
       probability: 1.0
-    
+
 springdoc:
   show-actuator: false
   swagger-ui:
