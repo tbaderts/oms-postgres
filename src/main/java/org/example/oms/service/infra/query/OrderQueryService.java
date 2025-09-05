@@ -12,8 +12,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class OrderQueryService {
 
     private final OrderRepository repository;
@@ -23,6 +26,7 @@ public class OrderQueryService {
     }
 
     public Page<Order> search(Map<String, String> params, Integer page, Integer size, String sort) {
+        log.info("Searching orders with params: {}, page: {}, size: {}, sort: {}", params, page, size, sort);
         Pageable pageable = buildPageable(page, size, sort);
         Specification<Order> spec = OrderSpecifications.dynamic(params);
         return repository.findAll(spec, pageable);

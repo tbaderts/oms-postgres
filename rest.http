@@ -5,22 +5,22 @@ content-type: application/json
 {
   "type": "newOrderTx",
   "sessionId": "test-session",
-  "clOrdId": "202500826-test-002",
-  "sendingTime": "2025-08-26T10:00:00",
+  "clOrdId": "20250904-test-001",
+  "sendingTime": "2025-09-04T10:44:00",
   "account": "account-01",
   "execInst": "NO_CROSS",
   "handlInst": "BROKER_INTERVENTION_OK",
   "securityIdSource": "RIC",
-  "orderQty": 200,
+  "orderQty": 100,
   "priceType": "PER_UNIT",
   "ordType": "LIMIT",
-  "price": 227.86,
-  "securityId": "APPL.OQ",
-  "securityDesc": "Apple Inc.",
-  "side": "SELL",
-  "symbol": "APPL",
+  "price": 22.35,
+  "securityId": "INTC.OQ",
+  "securityDesc": "Intel Corporation",
+  "side": "BUY",
+  "symbol": "INTC",
   "timeInForce": "DAY",
-  "transactTime": "2025-08-26T10:01:00",
+  "transactTime": "2025-09-04T10:01:00",
   "exDestination": "XNAS",
   "settlCurrency": "USD",
   "securityExchange": "XNAS",
@@ -28,13 +28,13 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:8090/api/query/orders?symbol=INTC&side=SELL HTTP/1.1
+GET http://localhost:8090/api/query/orders?symbol=INTC&side=BUY HTTP/1.1
 content-type: application/json
 
 ###
-GET http://localhost:8090/api/query/orders?price__between=200,300 HTTP/1.1
+GET http://localhost:8090/api/query/orders?price__between=20,40 HTTP/1.1
 content-type: application/json
 
 ###
-GET http://localhost:8090/api/query/orders?sendingTime__between=2025-08-01T00:00:00,2025-08-26T23:59:59 HTTP/1.1
+GET http://localhost:8090/api/query/orders?sendingTime__between=2025-08-01T00:00:00,2025-08-28T23:59:59 HTTP/1.1
 content-type: application/json

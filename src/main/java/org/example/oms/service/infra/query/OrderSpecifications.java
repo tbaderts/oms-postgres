@@ -10,20 +10,24 @@ import org.example.common.model.Order;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
- * Utility builder producing JPA Specifications for dynamic Order queries. Supports a minimal set of
- * operations (eq, like, gt, gte, lt, lte, between) and a few typed fields. Extend safely by adding
+ * Utility builder producing JPA Specifications for dynamic Order queries.
+ * Supports a minimal set of
+ * operations (eq, like, gt, gte, lt, lte, between) and a few typed fields.
+ * Extend safely by adding
  * cases inside buildNumeric / buildString / buildDate.
  */
 public final class OrderSpecifications {
 
-    private OrderSpecifications() {}
+    private OrderSpecifications() {
+    }
 
     public static Specification<Order> dynamic(Map<String, String> params) {
         List<Specification<Order>> specs = new ArrayList<>();
 
         params.forEach(
                 (k, v) -> {
-                    if (v == null || v.isBlank()) return; // skip empties
+                    if (v == null || v.isBlank())
+                        return; // skip empties
                     String key = k.trim();
                     // pattern: field__op e.g. price__gte, symbol__like
                     String field;
@@ -37,33 +41,23 @@ public final class OrderSpecifications {
                         op = "eq"; // default
                     }
                     switch (field) {
-                        case "orderId":
-                        case "rootOrderId":
-                        case "parentOrderId":
-                        case "clOrdId":
-                        case "account":
-                        case "symbol":
-                        case "securityId":
+                        case "orderId",
+                                "rootOrderId",
+                                "parentOrderId",
+                                "clOrdId",
+                                "account",
+                                "symbol",
+                                "securityId" ->
                             specs.add(buildString(field, op, v));
-                            break;
-                        case "price":
-                        case "orderQty":
-                        case "cashOrderQty":
+                        case "price", "orderQty", "cashOrderQty" ->
                             specs.add(buildNumeric(field, op, v));
-                            break;
-                        case "sendingTime":
-                        case "transactTime":
-                        case "expireTime":
+                        case "sendingTime", "transactTime", "expireTime" ->
                             specs.add(buildDate(field, op, v));
-                            break;
-                        case "side":
-                        case "ordType":
-                        case "state":
-                        case "cancelState":
+                        case "side", "ordType", "state", "cancelState" ->
                             specs.add(buildEnum(field, op, v));
-                            break;
-                        default:
+                        default -> {
                             // ignore unknown fields silently (could log)
+                        }
                     }
                 });
 
@@ -90,56 +84,50 @@ public final class OrderSpecifications {
         return (root, query, cb) -> {
             try {
                 switch (op) {
-                    case "between":
-                        {
-                            String[] parts = value.split(",", -1); // keep empties
-                            if (parts.length != 2) {
-                                return cb.conjunction();
-                            }
-                            String leftRaw = parts[0].trim();
-                            String rightRaw = parts[1].trim();
-                            boolean hasLeft = !leftRaw.isEmpty();
-                            boolean hasRight = !rightRaw.isEmpty();
-                            if (hasLeft && hasRight) {
-                                BigDecimal a = new BigDecimal(leftRaw);
-                                BigDecimal b = new BigDecimal(rightRaw);
-                                return cb.between(root.get(field), a, b);
-                            } else if (hasLeft) { // treat as >=
-                                BigDecimal a = new BigDecimal(leftRaw);
-                                return cb.greaterThanOrEqualTo(root.get(field), a);
-                            } else if (hasRight) { // treat as <=
-                                BigDecimal b = new BigDecimal(rightRaw);
-                                return cb.lessThanOrEqualTo(root.get(field), b);
-                            } else {
-                                return cb.conjunction();
-                            }
+                    case "between": {
+                        String[] parts = value.split(",", -1); // keep empties
+                        if (parts.length != 2) {
+                            return cb.conjunction();
                         }
-                    case "gt":
-                        {
-                            BigDecimal v = new BigDecimal(value);
-                            return cb.greaterThan(root.get(field), v);
+                        String leftRaw = parts[0].trim();
+                        String rightRaw = parts[1].trim();
+                        boolean hasLeft = !leftRaw.isEmpty();
+                        boolean hasRight = !rightRaw.isEmpty();
+                        if (hasLeft && hasRight) {
+                            BigDecimal a = new BigDecimal(leftRaw);
+                            BigDecimal b = new BigDecimal(rightRaw);
+                            return cb.between(root.get(field), a, b);
+                        } else if (hasLeft) { // treat as >=
+                            BigDecimal a = new BigDecimal(leftRaw);
+                            return cb.greaterThanOrEqualTo(root.get(field), a);
+                        } else if (hasRight) { // treat as <=
+                            BigDecimal b = new BigDecimal(rightRaw);
+                            return cb.lessThanOrEqualTo(root.get(field), b);
+                        } else {
+                            return cb.conjunction();
                         }
-                    case "gte":
-                        {
-                            BigDecimal v = new BigDecimal(value);
-                            return cb.greaterThanOrEqualTo(root.get(field), v);
-                        }
-                    case "lt":
-                        {
-                            BigDecimal v = new BigDecimal(value);
-                            return cb.lessThan(root.get(field), v);
-                        }
-                    case "lte":
-                        {
-                            BigDecimal v = new BigDecimal(value);
-                            return cb.lessThanOrEqualTo(root.get(field), v);
-                        }
+                    }
+                    case "gt": {
+                        BigDecimal v = new BigDecimal(value);
+                        return cb.greaterThan(root.get(field), v);
+                    }
+                    case "gte": {
+                        BigDecimal v = new BigDecimal(value);
+                        return cb.greaterThanOrEqualTo(root.get(field), v);
+                    }
+                    case "lt": {
+                        BigDecimal v = new BigDecimal(value);
+                        return cb.lessThan(root.get(field), v);
+                    }
+                    case "lte": {
+                        BigDecimal v = new BigDecimal(value);
+                        return cb.lessThanOrEqualTo(root.get(field), v);
+                    }
                     case "eq":
-                    default:
-                        {
-                            BigDecimal v = new BigDecimal(value);
-                            return cb.equal(root.get(field), v);
-                        }
+                    default: {
+                        BigDecimal v = new BigDecimal(value);
+                        return cb.equal(root.get(field), v);
+                    }
                 }
             } catch (NumberFormatException ex) {
                 // Invalid number -> ignore filter
@@ -152,32 +140,32 @@ public final class OrderSpecifications {
         return (root, query, cb) -> {
             // ISO-8601 expected; between uses comma
             switch (op) {
-                case "between":
-                    {
-                        String[] parts = value.split(",", -1);
-                        if (parts.length != 2) return cb.conjunction();
-                        String leftRaw = parts[0].trim();
-                        String rightRaw = parts[1].trim();
-                        boolean hasLeft = !leftRaw.isEmpty();
-                        boolean hasRight = !rightRaw.isEmpty();
-                        try {
-                            if (hasLeft && hasRight) {
-                                LocalDateTime a = LocalDateTime.parse(leftRaw);
-                                LocalDateTime b = LocalDateTime.parse(rightRaw);
-                                return cb.between(root.get(field), a, b);
-                            } else if (hasLeft) {
-                                LocalDateTime a = LocalDateTime.parse(leftRaw);
-                                return cb.greaterThanOrEqualTo(root.get(field), a);
-                            } else if (hasRight) {
-                                LocalDateTime b = LocalDateTime.parse(rightRaw);
-                                return cb.lessThanOrEqualTo(root.get(field), b);
-                            } else {
-                                return cb.conjunction();
-                            }
-                        } catch (Exception e) {
+                case "between": {
+                    String[] parts = value.split(",", -1);
+                    if (parts.length != 2)
+                        return cb.conjunction();
+                    String leftRaw = parts[0].trim();
+                    String rightRaw = parts[1].trim();
+                    boolean hasLeft = !leftRaw.isEmpty();
+                    boolean hasRight = !rightRaw.isEmpty();
+                    try {
+                        if (hasLeft && hasRight) {
+                            LocalDateTime a = LocalDateTime.parse(leftRaw);
+                            LocalDateTime b = LocalDateTime.parse(rightRaw);
+                            return cb.between(root.get(field), a, b);
+                        } else if (hasLeft) {
+                            LocalDateTime a = LocalDateTime.parse(leftRaw);
+                            return cb.greaterThanOrEqualTo(root.get(field), a);
+                        } else if (hasRight) {
+                            LocalDateTime b = LocalDateTime.parse(rightRaw);
+                            return cb.lessThanOrEqualTo(root.get(field), b);
+                        } else {
                             return cb.conjunction();
                         }
+                    } catch (Exception e) {
+                        return cb.conjunction();
                     }
+                }
                 case "gt":
                     return cb.greaterThan(root.get(field), LocalDateTime.parse(value));
                 case "gte":
@@ -199,9 +187,8 @@ public final class OrderSpecifications {
             if (!javaType.isEnum()) {
                 return cb.conjunction();
             }
-            @SuppressWarnings({"rawtypes", "unchecked"})
-            Enum enumValue =
-                    Enum.valueOf((Class<? extends Enum>) javaType.asSubclass(Enum.class), value);
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            Enum enumValue = Enum.valueOf((Class<? extends Enum>) javaType.asSubclass(Enum.class), value);
             return cb.equal(root.get(field), enumValue);
         };
     }

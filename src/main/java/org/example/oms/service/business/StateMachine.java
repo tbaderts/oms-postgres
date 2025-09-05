@@ -11,6 +11,9 @@ import java.util.function.Function;
 import org.example.common.model.State;
 
 public class StateMachine {
+    // Hide implicit public constructor
+    private StateMachine() {}
+
     // Define valid transitions as immutable maps
     private static final Map<State, Set<State>> VALID_TRANSITIONS = createTransitionMap();
 
