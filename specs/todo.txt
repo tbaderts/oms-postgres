@@ -1,0 +1,10 @@
+- bulk/block orders, grouping
+- allocation instructions
+- allocation service
+- rule service (user defined rules)
+- reference data service
+- real-time streaming market data
+- alerting
+- order parking/release
+
+governance and versioning
