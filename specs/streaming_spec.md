@@ -1,50 +1,25 @@
 # Trade Blotter Backend Component Specification
 
 ---
-## Wireframes & Visual Concepts
 
-### 1. Trade Blotter UI (Simplified)
+## Table of Contents
 
-```
----------------------------------------------------
-| Trade Blotter                                    |
-|-------------------------------------------------|
-| [Filter Panel]   [Order Table / Grid]            |
-|-------------------------------------------------|
-| [Status] [Symbol] [Qty] [Price] [Actions]        |
-|-------------------------------------------------|
-| NEW     AAPL     100   175.20   [View] [Edit]    |
-| FILLED  MSFT     50    320.10   [View]           |
-| ...                                             |
----------------------------------------------------
-| [Real-Time Updates: Connected]                   |
----------------------------------------------------
-```
-
-### 2. Data Flow Overview
-
-```
-   [OMS]
-     |
-   [Kafka Topics] ---> [Backend Stream Processor] ---> [WebSocket/RSocket] ---> [Trade Blotter UI]
-     ^                 |                                 |
-     |                 v                                 v
-   [Query Service] <--- [Initial Snapshot Loader]         [User Filter Input]
-```
-
-### 3. Filter Builder UI (Concept)
-
-```
----------------------------------------------
-| Filter Builder                            |
-|-------------------------------------------|
-| Field: [status]  Operator: [equals] Value: [NEW] |
-| [Add Condition] [AND/OR]                  |
-| Field: [orderQty] Operator: [> ] Value: [1000]   |
-|-------------------------------------------|
-| [Apply Filter]                            |
----------------------------------------------
-```
+1. [Introduction](#1-introduction)
+2. [Goals](#2-goals)
+3. [Architecture and Principles](#3-architecture-and-principles)
+4. [Technology Stack](#4-technology-stack)
+5. [Visual Concepts & UI Design](#visual-concepts--ui-design)
+6. [Data Model](#5-data-model)
+7. [Endpoints](#6-endpoints)
+8. [Data Flow](#7-data-flow)
+9. [Filtering](#8-filtering)
+10. [Real-Time Communication](#9-real-time-communication)
+11. [Error Handling](#10-error-handling)
+12. [Security](#11-security)
+13. [Scalability and Performance](#12-scalability-and-performance)
+14. [Monitoring and Logging](#13-monitoring-and-logging)
+15. [API Versioning](#14-api-versioning)
+16. [Improvements and Considerations](#improvements-and-considerations)
 
 ---
 
@@ -73,10 +48,99 @@ This document specifies the design and functionality of the backend component re
 
 *   **Programming Language:** Java 21
 *   **Framework:** Spring Boot, Spring WebFlux, Spring Reactor
-*   **Reactive Data Access:** Spring Data R2DBC (or similar) for reactive database access (if database reads are required for initializing the stream).
+*   **Reactive Data Access:** Spring Data R2DBC
 *   **Messaging:** Confluent Kafka (for receiving real-time events)
 *   **Real-Time Protocol:** RSocket over WebSocket (for bidirectional communication with the UI)
 *   **Serialization:** JSON with Jackson
+
+## Visual Concepts & UI Design
+
+### Trade Blotter Interface
+
+```
+---------------------------------------------------
+| Trade Blotter                                   |
+|-------------------------------------------------|
+| [Filter Panel]   [Order Table / Grid]           |
+|-------------------------------------------------|
+| [Status] [Symbol] [Qty] [Price] [Actions]       |
+|-------------------------------------------------|
+| NEW     AAPL     100   175.20   [View] [Edit]   |
+| FILLED  MSFT     50    320.10   [View]          |
+| ...                                             |
+---------------------------------------------------
+| [Real-Time Updates: Connected]                  |
+---------------------------------------------------
+```
+
+### Data Flow Architecture
+
+```
+   [OMS]
+     |
+   [Kafka Topics] ---> [Backend Stream Processor] ---> [WebSocket/RSocket] ---> [Trade Blotter UI]
+     ^                 |                                 |
+     |                 v                                 v
+   [Query Service] <--- [Initial Snapshot Loader]         [User Filter Input]
+```
+
+### Filter Builder Interface
+
+```
+----------------------------------------------------
+| Filter Builder                                   |
+|--------------------------------------------------|
+| Field: [status]  Operator: [equals] Value: [NEW] |
+| [Add Condition] [AND/OR]                         |
+| Field: [orderQty] Operator: [> ] Value: [1000]   |
+|--------------------------------------------------|
+| [Apply Filter]                                   |
+----------------------------------------------------
+```
+
+### Architecture Diagram
+
+```mermaid
+graph BT
+    subgraph "Frontend"
+        TradeBlotter[Trade Blotter UI<br/>Real-Time Updates<br/>Filter Builder]
+    end
+    
+    subgraph "Real-Time Communication"
+        RSocket[RSocket over WebSocket<br/>Bidirectional Stream]
+    end
+    
+    subgraph "Backend Services"
+        StreamProcessor[Stream Processor<br/>Spring Boot + WebFlux<br/>Reactive Processing]
+        QueryService[Query Service<br/>Initial Snapshot Loader]
+    end
+    
+    subgraph "Messaging Layer"
+        Kafka[Kafka Topics<br/>order-events<br/>execution-events<br/>quote-events<br/>quoteRequest-events]
+    end
+    
+    subgraph "External Systems"
+        OMS[Order Management System]
+        DB[(PostgreSQL Database)]
+    end
+    
+    TradeBlotter -->|Filter Criteria| RSocket
+    RSocket -->|Backpressure| StreamProcessor
+    RSocket -->|Real-Time Data| TradeBlotter
+    StreamProcessor -->|Filtered Stream| RSocket
+    QueryService -->|Historical Data| StreamProcessor
+    DB -->|Initial Snapshot| QueryService
+    Kafka -->|Real-Time Events| StreamProcessor
+    OMS -->|Publishes Events| Kafka
+    
+    style OMS fill:#1976d2,color:#ffffff
+    style DB fill:#7b1fa2,color:#ffffff
+    style Kafka fill:#f57c00,color:#ffffff
+    style StreamProcessor fill:#388e3c,color:#ffffff
+    style QueryService fill:#388e3c,color:#ffffff
+    style RSocket fill:#fbc02d,color:#000000
+    style TradeBlotter fill:#c2185b,color:#ffffff
+```
 
 **5. Data Model**
 

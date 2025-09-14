@@ -5,6 +5,7 @@
 - reference data service
 - real-time streaming market data
 - alerting
+- housekeeping
 - order parking/release
-
-governance and versioning
+- governance and versioning
+- architectural decision records ADRs, https://adr.github.io/
