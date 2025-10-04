@@ -26,7 +26,12 @@ public class OrderQueryService {
     }
 
     public Page<Order> search(Map<String, String> params, Integer page, Integer size, String sort) {
-        log.info("Searching orders with params: {}, page: {}, size: {}, sort: {}", params, page, size, sort);
+        log.info(
+                "Searching orders with params: {}, page: {}, size: {}, sort: {}",
+                params,
+                page,
+                size,
+                sort);
         Pageable pageable = buildPageable(page, size, sort);
         Specification<Order> spec = OrderSpecifications.dynamic(params);
         return repository.findAll(spec, pageable);

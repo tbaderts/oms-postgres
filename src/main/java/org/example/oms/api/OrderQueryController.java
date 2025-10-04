@@ -8,9 +8,6 @@ import org.example.oms.api.dto.OrderDto;
 import org.example.oms.api.mapper.OrderDtoMapper;
 import org.example.oms.service.infra.query.OrderQueryService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,15 +24,10 @@ public class OrderQueryController {
 
     private final OrderQueryService service;
     private final OrderDtoMapper mapper;
-    private final PagedResourcesAssembler<OrderDto> assembler;
 
-    public OrderQueryController(
-            OrderQueryService service,
-            OrderDtoMapper mapper,
-            PagedResourcesAssembler<OrderDto> assembler) {
+    public OrderQueryController(OrderQueryService service, OrderDtoMapper mapper) {
         this.service = service;
         this.mapper = mapper;
-        this.assembler = assembler;
     }
 
     @GetMapping
@@ -45,7 +37,7 @@ public class OrderQueryController {
                     "Supports operations via query params: field=value (eq), field__like=txt,"
                             + " field__gt=, __gte, __lt, __lte, __between=a,b. Pagination params:"
                             + " page,size. Sort param format: sort=field,DESC;otherField,ASC")
-    public ResponseEntity<PagedModel<EntityModel<OrderDto>>> search(
+    public ResponseEntity<Page<OrderDto>> search(
             @RequestParam Map<String, String> allParams,
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size,
@@ -63,7 +55,6 @@ public class OrderQueryController {
 
         Page<Order> result = service.search(filterParams, page, size, sort);
         Page<OrderDto> dtoPage = result.map(mapper::toDto);
-        PagedModel<EntityModel<OrderDto>> paged = assembler.toModel(dtoPage, EntityModel::of);
-        return ResponseEntity.ok(paged);
+        return ResponseEntity.ok(dtoPage);
     }
 }

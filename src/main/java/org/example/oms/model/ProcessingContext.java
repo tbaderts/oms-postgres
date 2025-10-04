@@ -2,7 +2,7 @@ package org.example.oms.model;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.example.common.model.Fill;
+import org.example.common.model.Execution;
 import org.example.common.model.Order;
 import org.example.common.model.Quote;
 import org.example.common.model.State;
@@ -24,7 +24,7 @@ public class ProcessingContext {
 
     @NonNull private Transaction transaction;
     private Order order;
-    private Fill fill;
+    private Execution execution;
     private Quote quote;
     private Event event;
     private OrderEvent orderEvent;

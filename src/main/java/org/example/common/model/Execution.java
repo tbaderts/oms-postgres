@@ -18,20 +18,23 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "fills")
+@Table(name = "executions")
 @SuperBuilder
 @EqualsAndHashCode
 @NoArgsConstructor
 @Getter
-public class Fill {
+public class Execution {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fill_sequence")
-    @SequenceGenerator(name = "fill_sequence", sequenceName = "fill_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "execution_sequence")
+    @SequenceGenerator(
+            name = "execution_sequence",
+            sequenceName = "execution_seq",
+            allocationSize = 1)
     private Long id;
 
     private String orderId;
-    private String fillId;
+    private String executionId;
     private BigDecimal avgPx;
     private BigDecimal cumQty;
     private String execID;

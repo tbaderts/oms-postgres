@@ -10,6 +10,13 @@ import org.mapstruct.*;
 public interface OrderMapper {
     @Mapping(target = "sendingTime", source = "sendingTime", qualifiedByName = "offsetToLocal")
     @Mapping(target = "expireTime", source = "expireTime", qualifiedByName = "offsetToLocal")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "tx", ignore = true)
+    @Mapping(target = "txNr", ignore = true)
+    @Mapping(target = "transactTime", ignore = true)
+    @Mapping(target = "tifTimestamp", ignore = true)
+    @Mapping(target = "state", ignore = true)
+    @Mapping(target = "cancelState", ignore = true)
     Order toOrder(org.example.common.model.cmd.Order cmdOrder);
 
     @Mapping(target = "sendingTime", source = "sendingTime", qualifiedByName = "localToOffset")
